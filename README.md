@@ -1,3 +1,3 @@
 # evee
 
-A new Flutter project.
+A survey administration mobile application
