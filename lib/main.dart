@@ -1,4 +1,5 @@
 import 'package:evee/landing_page.dart';
+import 'package:evee/login.dart';
 import 'package:flutter/material.dart';
 
 void main() 
@@ -21,7 +22,8 @@ class MainApp extends StatelessWidget
       routes: 
       {
         '/landing_page': (context) => Landing_page(),
-        
+        '/login_page': (context) => Login_page(),
+
       },
 
     );
