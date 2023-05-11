@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "327619055198",
+    "project_id": "evee---e-voting-app",
+    "storage_bucket": "evee---e-voting-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327619055198:android:3448250f82f0ec4bf62ecf",
+        "android_client_info": {
+          "package_name": "com.example.evee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327619055198-iced9rq2kn02eo67lppcbc6rigrt8kgf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPrRuvDPtOxXh2MiAxsg9YNVtDkIT6nhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327619055198-iced9rq2kn02eo67lppcbc6rigrt8kgf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327619055198-f3hfierj6a5ruvq16t070r5rkg3g5t5m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.evee.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
