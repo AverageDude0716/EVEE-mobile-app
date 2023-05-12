@@ -1,3 +1,5 @@
+// this is the main dart file. we don't really need to edit this
+
 import 'package:evee/landing_page.dart';
 import 'package:evee/login.dart';
 import 'package:flutter/material.dart';

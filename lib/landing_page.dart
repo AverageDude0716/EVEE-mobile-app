@@ -1,5 +1,6 @@
-import 'package:evee/login.dart';
+// this is the first screen/page shown.
 
+import 'package:evee/login.dart';
 import 'styles.dart';
 import 'package:flutter/material.dart';
 
