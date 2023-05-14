@@ -19,24 +19,94 @@ class _Login_page_state extends State<Login_page>
   @override
   Widget build(BuildContext context)
   {
-
-    return  const Scaffold
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    
+    return  Scaffold
     (
 
-      body: Center
-      (
-
-        child: Text
+      body: Container
         (
-          'login',
-          style: TextStyle
+
+          color: light_yellow,
+
+           child: GestureDetector
+           (
+
+              onTap: () 
+              {
+                FocusScope.of(context).unfocus();
+              },
+
+              child: Container
           (
-            fontSize: 48.0,
+
+            height: screenHeight,
+            width: screenWidth,
+            margin: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration
+            (
+
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0)
+
+            ),
+
+            child: Column
+            (
+
+              children: 
+              [
+
+                const Text
+                (
+                  'Login',
+                  style: TextStyle
+                  (
+                    color: Colors.black,
+                    fontSize: 48.0,
+                    decoration: TextDecoration.none
+                  ),
+                ),//header
+
+                Container
+                (
+
+                  margin: const EdgeInsets.fromLTRB(0, 50.0, 0, 0),
+
+                  child: const TextField
+                  (
+
+                    decoration: InputDecoration
+                    (
+
+                      hintText: 'Enter E-mail',
+                      border: OutlineInputBorder
+                      (
+                        borderSide: BorderSide(color: light_gray),
+                      ),
+                      enabledBorder: OutlineInputBorder
+                      (
+                        borderSide: BorderSide(color: light_gray),
+                      ),
+
+                    ),
+
+                  ),
+
+                ),
+
+              ],
+
+            ),
+
           ),
+
+           ),//form
+
         ),
 
-      ),
-     
     );
 
   }
