@@ -1,7 +1,7 @@
 name: evee
-description: A new Flutter project.
+description: A survey administration app.
 publish_to: 'none'
-version: 0.1.0
+version: 3.1.0
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
@@ -17,6 +17,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.9.2"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/evee_logo_img.png"  
 
 flutter:
   uses-material-design: true

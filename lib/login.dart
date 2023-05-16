@@ -15,6 +15,14 @@ class Login_page extends StatefulWidget
 
 class _Login_page_state extends State<Login_page>
 {
+  TextEditingController email_contoller = TextEditingController();
+  TextEditingController password_controller = TextEditingController();
+
+  void _login_button_press()
+  {
+    
+  }
+
 
   @override
   Widget build(BuildContext context)
@@ -25,87 +33,137 @@ class _Login_page_state extends State<Login_page>
     return  Scaffold
     (
 
-      body: Container
-        (
+      body: SingleChildScrollView
+      (
 
-          color: light_yellow,
+        child: Container
+              (
 
-           child: GestureDetector
-           (
+                color: light_yellow,
 
-              onTap: () 
-              {
-                FocusScope.of(context).unfocus();
-              },
-
-              child: Container
-          (
-
-            height: screenHeight,
-            width: screenWidth,
-            margin: const EdgeInsets.all(30.0),
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration
-            (
-
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0)
-
-            ),
-
-            child: Column
-            (
-
-              children: 
-              [
-
-                const Text
+                child: GestureDetector
                 (
-                  'Login',
-                  style: TextStyle
+
+                    onTap: () 
+                    {
+                      FocusScope.of(context).unfocus();
+                    },
+
+                    child: Container
+                (
+
+                  height: screenHeight,
+                  width: screenWidth,
+                  margin: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(20.0),
+                  decoration: BoxDecoration
                   (
-                    color: Colors.black,
-                    fontSize: 48.0,
-                    decoration: TextDecoration.none
+
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0)
+
                   ),
-                ),//header
 
-                Container
-                (
-
-                  margin: const EdgeInsets.fromLTRB(0, 50.0, 0, 0),
-
-                  child: const TextField
+                  child: Column
                   (
 
-                    decoration: InputDecoration
-                    (
+                    children: 
+                    [
 
-                      hintText: 'Enter E-mail',
-                      border: OutlineInputBorder
+                      //header
+                      const Text
                       (
-                        borderSide: BorderSide(color: light_gray),
-                      ),
-                      enabledBorder: OutlineInputBorder
+                        'Login',
+                        style: TextStyle
+                        (
+                          color: Colors.black,
+                          fontSize: 48.0,
+                          decoration: TextDecoration.none
+                        ),
+                      ),//header
+
+                      //email textfield
+                      Container
                       (
-                        borderSide: BorderSide(color: light_gray),
+
+                        margin: const EdgeInsets.fromLTRB(0, 100.0, 0, 0),
+
+                        child: const TextField
+                        (
+
+                          decoration: InputDecoration
+                          (
+
+                            hintText: 'Enter E-mail',
+                            border: OutlineInputBorder
+                            (
+                              borderSide: BorderSide(color: light_gray),
+                            ),
+                            enabledBorder: OutlineInputBorder
+                            (
+                              borderSide: BorderSide(color: light_gray),
+                            ),
+
+                          ),
+
+                        ),
+
                       ),
 
-                    ),
+                      //password textfield
+                      Container
+                      (
+
+                        margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 100),
+
+                        child: TextField
+                              (
+
+                                obscureText: true,
+                                decoration: InputDecoration
+                                (
+                                  hintText: 'Enter Password',
+
+                                  border: const OutlineInputBorder
+                                  (
+                                    borderSide: BorderSide(color: light_gray),
+                                    
+                                  ),
+
+                                  enabledBorder: const OutlineInputBorder
+                                  (
+                                    borderSide: BorderSide(color: light_gray)
+                                  ),
+
+                                  suffixIcon: IconButton
+                                  (
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.visibility)
+                                  )
+                                ),
+                                
+
+                              ),
+
+                      ),
+
+                      // login button
+                      ElevatedButton
+                      (
+                        onPressed: () {},
+                        child: const Text('Login')
+                      ),
+                    ],
 
                   ),
 
                 ),
 
-              ],
+                ),//form
 
-            ),
+              ),
 
-          ),
-
-           ),//form
-
-        ),
+      ),
 
     );
 
