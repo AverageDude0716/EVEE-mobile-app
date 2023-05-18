@@ -2,6 +2,7 @@
 
 import 'package:evee/create_account.dart';
 import 'package:evee/landing_page.dart';
+import 'package:evee/voter_home_page.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
 
@@ -165,7 +166,16 @@ class _Login_page_state extends State<Login_page>
                           // login button
                           ElevatedButton
                           (
-                            onPressed: () {},
+                            onPressed: () 
+                            {
+
+                              Navigator.push
+                              (
+                                context,
+                                MaterialPageRoute(builder: (context) => Voter_home_page())
+                              );
+
+                            },
                             child: const Text('Login')
                           ),
 
