@@ -1,5 +1,6 @@
 // this is the login screen/page.
 
+import 'package:evee/create_account.dart';
 import 'package:evee/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
@@ -39,7 +40,20 @@ class _Login_page_state extends State<Login_page>
         child: Container
               (
 
-                color: light_yellow,
+                height: screenHeight,
+                width: screenWidth,
+
+                decoration: const BoxDecoration
+                (
+
+                  image: DecorationImage
+                  (
+                    image: AssetImage('assets/background_img/background_1.jpg'),
+                    fit: BoxFit.cover,
+                  )
+
+                ),
+
 
                 child: GestureDetector
                 (
@@ -50,114 +64,132 @@ class _Login_page_state extends State<Login_page>
                     },
 
                     child: Container
-                (
+                    (
 
-                  height: screenHeight,
-                  width: screenWidth,
-                  margin: const EdgeInsets.all(30.0),
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration
-                  (
-
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0)
-
-                  ),
-
-                  child: Column
-                  (
-
-                    children: 
-                    [
-
-                      //header
-                      const Text
-                      (
-                        'Login',
-                        style: TextStyle
-                        (
-                          color: Colors.black,
-                          fontSize: 48.0,
-                          decoration: TextDecoration.none
-                        ),
-                      ),//header
-
-                      //email textfield
-                      Container
+                      //form design
+                      height: screenHeight,
+                      width: screenWidth,
+                      margin: const EdgeInsets.all(30.0),
+                      padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration
                       (
 
-                        margin: const EdgeInsets.fromLTRB(0, 100.0, 0, 0),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0)
 
-                        child: const TextField
-                        (
+                      ),
 
-                          decoration: InputDecoration
+                      child: Column
+                      (
+
+                        children: 
+                        [
+
+                          //header
+                          const Text
+                          (
+                            'Login',
+                            style: TextStyle
+                            (
+                              color: Colors.black,
+                              fontSize: 48.0,
+                              decoration: TextDecoration.none
+                            ),
+                          ),//header
+
+                          //email textfield
+                          Container
                           (
 
-                            hintText: 'Enter E-mail',
-                            border: OutlineInputBorder
+                            margin: const EdgeInsets.fromLTRB(0, 100.0, 0, 0),
+
+                            child: const TextField
                             (
-                              borderSide: BorderSide(color: light_gray),
-                            ),
-                            enabledBorder: OutlineInputBorder
-                            (
-                              borderSide: BorderSide(color: light_gray),
+
+                              decoration: InputDecoration
+                              (
+
+                                hintText: 'Enter E-mail',
+                                border: OutlineInputBorder
+                                (
+                                  borderSide: BorderSide(color: light_gray),
+                                ),
+                                enabledBorder: OutlineInputBorder
+                                (
+                                  borderSide: BorderSide(color: light_gray),
+                                ),
+
+                              ),
+
                             ),
 
                           ),
 
-                        ),
+                          //password textfield
+                          Container
+                          (
 
-                      ),
+                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 100),
 
-                      //password textfield
-                      Container
-                      (
-
-                        margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 100),
-
-                        child: TextField
-                              (
-
-                                obscureText: true,
-                                decoration: InputDecoration
-                                (
-                                  hintText: 'Enter Password',
-
-                                  border: const OutlineInputBorder
+                            child: TextField
                                   (
-                                    borderSide: BorderSide(color: light_gray),
+
+                                    obscureText: true,
+                                    decoration: InputDecoration
+                                    (
+                                      hintText: 'Enter Password',
+
+                                      border: const OutlineInputBorder
+                                      (
+                                        borderSide: BorderSide(color: light_gray),
+                                        
+                                      ),
+
+                                      enabledBorder: const OutlineInputBorder
+                                      (
+                                        borderSide: BorderSide(color: light_gray)
+                                      ),
+
+                                      suffixIcon: IconButton
+                                      (
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.visibility)
+                                      )
+                                    ),
                                     
+
                                   ),
 
-                                  enabledBorder: const OutlineInputBorder
-                                  (
-                                    borderSide: BorderSide(color: light_gray)
-                                  ),
+                          ),
 
-                                  suffixIcon: IconButton
-                                  (
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.visibility)
-                                  )
-                                ),
-                                
+                          // login button
+                          ElevatedButton
+                          (
+                            onPressed: () {},
+                            child: const Text('Login')
+                          ),
 
-                              ),
+                          //to sign up
+                          ElevatedButton
+                          (
+                            onPressed: () 
+                            {
+
+                              Navigator.push
+                              (
+                                context,
+                                MaterialPageRoute(builder: (context) => Create_account_page())
+                              );
+
+                            },
+                            child: const Text('Dont have an account? Sign in')
+                          )
+      
+                        ],
 
                       ),
 
-                      // login button
-                      ElevatedButton
-                      (
-                        onPressed: () {},
-                        child: const Text('Login')
-                      ),
-                    ],
-
-                  ),
-
-                ),
+                    ),
 
                 ),//form
 

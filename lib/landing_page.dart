@@ -19,57 +19,75 @@ class _Landing_page_state extends State<Landing_page>
    @override
   Widget build(BuildContext context)
   {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
 
     return   Scaffold
     (
 
-      backgroundColor: light_yellow,
-
       body: Center
       (
-
-        child: Column
+        
+        child: Container
         (
+          height: screenHeight,
+          width: screenWidth,
 
-          children:  [
+          decoration: const BoxDecoration
+          (
 
-            Container
+            image: DecorationImage
             (
-              margin: EdgeInsets.fromLTRB(0, 200, 0, 75.0),
-
-                child: const Text
-                (
-
-                  'Evee',
-                  style: TextStyle
-                  (
-                    fontSize: 48.0,
-                  ),
-                ),
-
-            ),
-
-            ElevatedButton
-            (
-
-              onPressed: ()
-              {
-
-                Navigator.push
-                (
-                  context,
-                  MaterialPageRoute(builder: (context) => Login_page())
-                );
-
-              },
-              child: const Text
-              (
-                'Login'
-              )
-
+              image: AssetImage('assets/background_img/background_1.jpg'),
+              fit: BoxFit.cover,
             )
 
-          ],
+          ),
+
+          child: Column
+          (
+
+            children:  [
+
+              Container
+              (
+                margin: EdgeInsets.fromLTRB(0, 200, 0, 75.0),
+
+                  child: const Text
+                  (
+
+                    'Evee',
+                    style: TextStyle
+                    (
+                      fontSize: 48.0,
+                    ),
+                  ),
+
+              ),
+
+              ElevatedButton
+              (
+
+                onPressed: ()
+                {
+
+                  Navigator.push
+                  (
+                    context,
+                    MaterialPageRoute(builder: (context) => Login_page())
+                  );
+
+                },
+                child: const Text
+                (
+                  'Login'
+                )
+
+              )
+
+            ],
+
+          ),
 
         ),
 

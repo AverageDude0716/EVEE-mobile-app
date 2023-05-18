@@ -22,7 +22,9 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/evee_logo_img.png"  
+  image_path: "assets/evee_logo_img.png" 
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/background_img/background_1.jpg
