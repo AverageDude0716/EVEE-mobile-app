@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "327619055198",
-    "project_id": "evee---e-voting-app",
-    "storage_bucket": "evee---e-voting-app.appspot.com"
+    "project_number": "491902988523",
+    "project_id": "evee-survey-administration-app",
+    "storage_bucket": "evee-survey-administration-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:327619055198:android:3448250f82f0ec4bf62ecf",
+        "mobilesdk_app_id": "1:491902988523:android:93f4bdf51c409f9fbb0eae",
         "android_client_info": {
           "package_name": "com.example.evee"
         }
       },
       "oauth_client": [
         {
-          "client_id": "327619055198-iced9rq2kn02eo67lppcbc6rigrt8kgf.apps.googleusercontent.com",
+          "client_id": "491902988523-in99t1l0c0j3di6jnhmk2efnnk4cge4a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDPrRuvDPtOxXh2MiAxsg9YNVtDkIT6nhc"
+          "current_key": "AIzaSyBlADPshAkYak_6bavhX9ryYSYKDCZr30w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "327619055198-iced9rq2kn02eo67lppcbc6rigrt8kgf.apps.googleusercontent.com",
+              "client_id": "491902988523-in99t1l0c0j3di6jnhmk2efnnk4cge4a.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "327619055198-f3hfierj6a5ruvq16t070r5rkg3g5t5m.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.evee.ios"
-              }
             }
           ]
         }
