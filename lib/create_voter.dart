@@ -57,7 +57,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
                     (
 
                       //form design
-                      height: screenHeight,
+                      //height: screenHeight,
                       width: screenWidth,
                       margin: const EdgeInsets.all(30.0),
                       padding: const EdgeInsets.all(20.0),
@@ -78,11 +78,11 @@ class _Create_voter_page_state extends State<Create_voter_page>
                           //header
                           const Text
                           (
-                            'Create a Account',
+                            'Create a Voter Account',
                             style: TextStyle
                             (
                               color: Colors.black,
-                              fontSize: 48.0,
+                              fontSize: 38.0,
                               decoration: TextDecoration.none
                             ),
                           ),//header
@@ -203,6 +203,34 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                           ),
 
+                          //gender
+                          Container
+                          (
+
+                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+
+                            child: const TextField
+                            (
+
+                              decoration: InputDecoration
+                              (
+
+                                hintText: 'Enter Gender (Male, Female, Other)',
+                                border: OutlineInputBorder
+                                (
+                                  borderSide: BorderSide(color: light_gray),
+                                ),
+                                enabledBorder: OutlineInputBorder
+                                (
+                                  borderSide: BorderSide(color: light_gray),
+                                ),
+
+                              ),
+
+                            ),
+
+                          ),
+
                           //email textfield
                           Container
                           (
@@ -235,7 +263,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
                           Container
                           (
 
-                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 100),
+                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
 
                             child: TextField
                                   (
@@ -244,6 +272,43 @@ class _Create_voter_page_state extends State<Create_voter_page>
                                     decoration: InputDecoration
                                     (
                                       hintText: 'Enter Password',
+
+                                      border: const OutlineInputBorder
+                                      (
+                                        borderSide: BorderSide(color: light_gray),
+                                        
+                                      ),
+
+                                      enabledBorder: const OutlineInputBorder
+                                      (
+                                        borderSide: BorderSide(color: light_gray)
+                                      ),
+
+                                      suffixIcon: IconButton
+                                      (
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.visibility)
+                                      )
+                                    ),
+                                    
+
+                                  ),
+
+                          ),
+
+                          //confirm password
+                          Container
+                          (
+
+                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 100),
+
+                            child: TextField
+                                  (
+
+                                    obscureText: true,
+                                    decoration: InputDecoration
+                                    (
+                                      hintText: 'Confirm Password',
 
                                       border: const OutlineInputBorder
                                       (

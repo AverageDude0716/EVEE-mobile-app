@@ -15,11 +15,33 @@ class _Voter_home_page_state extends State<Voter_home_page>
 {
 
   int _selectedIndex = 0;  
-  static const List<Widget> _widgetOptions = <Widget>
+  static final List<Widget> _widgetOptions = <Widget>
   [  
-    Text('Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),  
-    Text('Search Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),  
-    Text('Profile Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),  
+
+    //home page
+    Container
+    (
+
+      child: Text('Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+
+    ),
+
+    //profile page
+    Container
+    (
+
+      child: Text('Profilo Page', style:  TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+
+    ),  
+
+    //settings page
+    Container
+    (
+
+      child: Text('Settings Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),  
+
+    )
+
   ];  
 
   
