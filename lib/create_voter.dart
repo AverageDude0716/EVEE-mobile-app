@@ -1,4 +1,6 @@
 import 'package:evee/login.dart';
+import 'package:evee/firebase_functions.dart';
+import 'package:evee/voter_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'styles.dart';
@@ -14,6 +16,144 @@ class Create_voter_page extends StatefulWidget
 
 class _Create_voter_page_state extends State<Create_voter_page>
 {
+  TextEditingController last_name_controller = TextEditingController();
+  TextEditingController first_name_controller = TextEditingController();
+  TextEditingController birthdate_controller = TextEditingController();
+  TextEditingController gender_controller = TextEditingController();
+  TextEditingController email_contoller = TextEditingController();
+  TextEditingController password_controller = TextEditingController();
+  TextEditingController confirm_password_controller = TextEditingController();
+
+  Firebase_func firebase_func = Firebase_func();
+
+  void _signup_button_press()
+  {
+    
+    String last_name = last_name_controller.text;
+    String first_name = first_name_controller.text;
+    String birth_date_string = birthdate_controller.text;
+    String gender = gender_controller.text;
+    String email = email_contoller.text;
+    String password = password_controller.text;
+    String confirm_password = confirm_password_controller.text;
+
+    if(last_name.isNotEmpty && first_name.isNotEmpty && birth_date_string.isNotEmpty
+    && gender.isNotEmpty && email.isNotEmpty && password.isNotEmpty && confirm_password.isNotEmpty)
+    {
+
+      int birth_date = int.parse(birth_date_string);
+
+      if(gender == 'Male' || gender == 'Female'|| gender == 'male' || gender == 'female' || gender == 'other' || gender == 'Other')
+      {
+
+        if(email.contains('@') && email.contains('.'))
+        {
+
+          if(password.length > 6 )
+          {
+
+            if(confirm_password == password)
+          {
+
+            try
+            {
+              firebase_func.signUpWithEmailAndPassword(email, password);
+            }
+            catch(e)
+            {
+              SnackBar snackBar = SnackBar
+              (
+                content: Text('Sign Up failed. $e' ),
+                behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            finally
+            {
+
+              try
+              {
+                firebase_func.save_voter(last_name, first_name, birth_date, gender, email, password);
+              }
+              catch(e)
+              {
+                SnackBar snackBar = SnackBar
+                (
+                  content: Text('Sign Up failed. $e' ),
+                  behavior: SnackBarBehavior.floating,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+              finally
+              {
+                Navigator.push
+                (
+                  context,
+                  MaterialPageRoute(builder: (context) => Voter_home_page())
+                );
+              }
+
+            }
+
+          }
+          else
+          {
+            const SnackBar snackBar = SnackBar
+            (
+              content: Text('Please confirm your password'),
+              behavior: SnackBarBehavior.floating,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+
+          }
+          else
+          {
+
+            const SnackBar snackBar = SnackBar
+            (
+              content: Text('Please enter a stronger password (Must be at least 6 characters long)'),
+              behavior: SnackBarBehavior.floating,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+          }
+
+        }
+        else
+        {
+          const SnackBar snackBar = SnackBar
+          (
+            content: Text('Enter a valid e-mail'),
+            behavior: SnackBarBehavior.floating,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+
+      }
+      else
+      {
+        const SnackBar snackBar = SnackBar
+      (
+        content: Text('Inavlid input at Gender. (Male, Female, Others)'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+
+    }
+    else
+    {
+      const SnackBar snackBar = SnackBar
+      (
+        content: Text('Fill up all fields'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context)
@@ -108,10 +248,10 @@ class _Create_voter_page_state extends State<Create_voter_page>
                                   (
                                     margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
 
-                                    child: const TextField
+                                    child:  TextField
                                     (
-
-                                      decoration: InputDecoration
+                                      controller: last_name_controller,
+                                      decoration: const InputDecoration
                                       (
 
                                         hintText: 'last name',
@@ -139,10 +279,11 @@ class _Create_voter_page_state extends State<Create_voter_page>
                                   (
                                     margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
 
-                                    child: const TextField
+                                    child: TextField
                                     (
+                                      controller: first_name_controller,
 
-                                      decoration: InputDecoration
+                                      decoration: const InputDecoration
                                       (
 
                                         hintText: 'first name',
@@ -175,6 +316,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                             child: TextField
                             (
+                              controller: birthdate_controller,
 
                               decoration: const InputDecoration
                               (
@@ -209,13 +351,14 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                             margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
 
-                            child: const TextField
+                            child: TextField
                             (
+                              controller: gender_controller,
 
-                              decoration: InputDecoration
+                              decoration: const InputDecoration
                               (
 
-                                hintText: 'Enter Gender (Male, Female, Other)',
+                                hintText: 'Enter Gender (Male, Female, Others)',
                                 border: OutlineInputBorder
                                 (
                                   borderSide: BorderSide(color: light_gray),
@@ -237,10 +380,11 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                             margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
 
-                            child: const TextField
+                            child: TextField
                             (
+                              controller: email_contoller,
 
-                              decoration: InputDecoration
+                              decoration: const InputDecoration
                               (
 
                                 hintText: 'Enter E-mail',
@@ -267,7 +411,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                             child: TextField
                                   (
-
+                                    controller: password_controller,
                                     obscureText: true,
                                     decoration: InputDecoration
                                     (
@@ -304,7 +448,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                             child: TextField
                                   (
-
+                                    controller: confirm_password_controller,
                                     obscureText: true,
                                     decoration: InputDecoration
                                     (
@@ -336,7 +480,12 @@ class _Create_voter_page_state extends State<Create_voter_page>
                           // create account button
                           ElevatedButton
                           (
-                            onPressed: () {},
+                            onPressed: () 
+                            {
+
+                              _signup_button_press();
+
+                            },
                             child: const Text('Create Account')
                           ),
 
