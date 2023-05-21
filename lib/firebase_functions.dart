@@ -85,7 +85,7 @@ class Firebase_func
 
     };
 
-    db.collection("voters").doc().set(update).then((value)
+    db.collection("admins").doc().set(update).then((value)
     {
 
       
