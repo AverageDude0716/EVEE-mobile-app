@@ -1,5 +1,6 @@
 import 'package:evee/login.dart';
 import 'package:evee/firebase_functions.dart';
+import 'package:evee/voter_dashboard.dart';
 import 'package:evee/voter_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -74,6 +75,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
               try
               {
                 firebase_func.save_voter(last_name, first_name, birth_date, gender, email, password);
+                firebase_func.save_user(last_name, first_name, birth_date, gender, email, password);
               }
               catch(e)
               {
@@ -89,7 +91,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
                 Navigator.push
                 (
                   context,
-                  MaterialPageRoute(builder: (context) => Voter_home_page())
+                  MaterialPageRoute(builder: (context) => Voter_dashboard_page())
                 );
               }
 

@@ -1,3 +1,4 @@
+import 'package:evee/admin_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:evee/login.dart';
 import 'package:evee/firebase_functions.dart';
@@ -74,6 +75,7 @@ TextEditingController last_name_controller = TextEditingController();
               try
               {
                 firebase_func.save_admin(last_name, first_name, birth_date, gender, email, password);
+                firebase_func.save_user(last_name, first_name, birth_date, gender, email, password);
               }
               catch(e)
               {
@@ -89,7 +91,7 @@ TextEditingController last_name_controller = TextEditingController();
                 Navigator.push
                 (
                   context,
-                  MaterialPageRoute(builder: (context) => Admnin_home_page())
+                  MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
                 );
               }
 

@@ -3,6 +3,9 @@
 import 'package:evee/create_account.dart';
 import 'package:evee/landing_page.dart';
 import 'package:evee/voter_home_page.dart';
+import 'package:evee/firebase_functions.dart';
+import 'package:evee/login_loading.dart';
+import 'package:evee/admin_home_page.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
 
@@ -20,9 +23,39 @@ class _Login_page_state extends State<Login_page>
   TextEditingController email_contoller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
 
+  Firebase_func firebase_func = Firebase_func();
+
   void _login_button_press()
   {
-    
+    String email = email_contoller.text;
+    String password = password_controller.text;
+
+    try
+    {
+      firebase_func.loginWithEmailAndPassword(email, password);
+    }
+    catch(e)
+    {
+     
+     SnackBar snackBar = SnackBar
+              (
+                content: Text('Login Up failed. $e' ),
+                behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      
+    }
+    finally
+    {
+
+      Navigator.push
+                (
+                  context,
+                  MaterialPageRoute(builder: (context) => Login_loading())
+                );
+
+    }
+
   }
 
 
@@ -104,10 +137,10 @@ class _Login_page_state extends State<Login_page>
 
                             margin: const EdgeInsets.fromLTRB(0, 100.0, 0, 0),
 
-                            child: const TextField
+                            child:  TextField
                             (
-
-                              decoration: InputDecoration
+                              controller: email_contoller,
+                              decoration: const InputDecoration
                               (
 
                                 hintText: 'Enter E-mail',
@@ -134,7 +167,7 @@ class _Login_page_state extends State<Login_page>
 
                             child: TextField
                                   (
-
+                                    controller: password_controller,
                                     obscureText: true,
                                     decoration: InputDecoration
                                     (
@@ -172,7 +205,7 @@ class _Login_page_state extends State<Login_page>
                               Navigator.push
                               (
                                 context,
-                                MaterialPageRoute(builder: (context) => Voter_home_page())
+                                MaterialPageRoute(builder: (context) => Admnin_home_page())
                               );
 
                             },
