@@ -33,6 +33,8 @@ class _Admin_home_page_state extends State<Admnin_home_page>
           color: light_yellow,
           width: screenWidth,
 
+          child: Text('admin Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+
         ),
 
       ),

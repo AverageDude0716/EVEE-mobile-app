@@ -1,4 +1,7 @@
 import 'package:evee/landing_page.dart';
+import 'package:evee/settings_page.dart';
+import 'package:evee/voter_home_page.dart';
+import 'package:evee/voter_profie_page.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
 
@@ -18,29 +21,9 @@ class _Voter_dashboard_page_state extends State<Voter_dashboard_page>
   static final List<Widget> _widgetOptions = <Widget>
   [  
 
-    //home page
-    Container
-    (
-
-      child: Text(' voter Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-
-    ),
-
-    //profile page
-    Container
-    (
-
-      child: Text('Profilo Page', style:  TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-
-    ),  
-
-    //settings page
-    Container
-    (
-
-      child: Text('Settings Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),  
-
-    )
+   Voter_home_page(),
+   Voter_profile_page(),
+   Settings_page(),
 
   ];  
 
@@ -85,13 +68,13 @@ class _Voter_dashboard_page_state extends State<Voter_dashboard_page>
           BottomNavigationBarItem(  
             icon: Icon(Icons.person),  
             label: 'Profile',  
-            backgroundColor: light_pink  
+            backgroundColor: light_violet  
           ), 
 
           BottomNavigationBarItem(  
             icon: Icon(Icons.settings),  
             label: 'Settings',  
-            backgroundColor: light_blue  
+            backgroundColor: light_violet
           ),  
 
         ], 

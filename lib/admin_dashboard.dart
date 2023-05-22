@@ -1,4 +1,7 @@
+import 'package:evee/admin_home_page.dart';
+import 'package:evee/admin_profile_page.dart';
 import 'package:evee/landing_page.dart';
+import 'package:evee/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
 
@@ -19,29 +22,9 @@ class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
   static final List<Widget> _widgetOptions = <Widget>
   [  
 
-    //home page
-    Container
-    (
-
-      child: Text('admin Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-
-    ),
-
-    //profile page
-    Container
-    (
-
-      child: Text('Profilo Page', style:  TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-
-    ),  
-
-    //settings page
-    Container
-    (
-
-      child: Text('Settings Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),  
-
-    )
+    Admnin_home_page(),
+    Admin_profile_page(),
+    Settings_page(),
     
   ];  
 
@@ -94,13 +77,13 @@ class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
           BottomNavigationBarItem(  
             icon: Icon(Icons.person),  
             label: 'Profile',  
-            backgroundColor: light_pink  
+            backgroundColor: light_violet 
           ), 
 
           BottomNavigationBarItem(  
             icon: Icon(Icons.settings),  
             label: 'Settings',  
-            backgroundColor: light_blue  
+            backgroundColor: light_violet 
           ),  
 
         ], 

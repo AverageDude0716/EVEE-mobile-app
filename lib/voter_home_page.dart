@@ -24,10 +24,18 @@ class _Voter_home_page_state extends State<Voter_home_page>
     return Scaffold
     (
 
-      body: Center
+      body: SingleChildScrollView
       (
-       
-        
+
+        child: Container
+        (
+
+          color: light_yellow,
+          width: screenWidth,
+
+          child: Text('voter Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+
+        ),
 
       ),
 
