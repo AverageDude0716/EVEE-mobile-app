@@ -22,7 +22,7 @@ class _Voter_dashboard_page_state extends State<Voter_dashboard_page>
     Container
     (
 
-      child: Text('Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+      child: Text(' voter Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
 
     ),
 

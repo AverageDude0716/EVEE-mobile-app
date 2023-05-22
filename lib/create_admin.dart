@@ -75,7 +75,6 @@ TextEditingController last_name_controller = TextEditingController();
               try
               {
                 firebase_func.save_admin(last_name, first_name, birth_date, gender, email, password);
-                firebase_func.save_user(last_name, first_name, birth_date, gender, email, password);
               }
               catch(e)
               {
@@ -88,6 +87,7 @@ TextEditingController last_name_controller = TextEditingController();
               }
               finally
               {
+                
                 Navigator.push
                 (
                   context,

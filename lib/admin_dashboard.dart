@@ -23,7 +23,7 @@ class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
     Container
     (
 
-      child: Text('Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+      child: Text('admin Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
 
     ),
 

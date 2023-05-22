@@ -23,8 +23,15 @@ class _Login_loadinge_state extends State<Login_loading>
 
   void load(BuildContext context )
   {
+    User? user = auth.currentUser;
+    late String uid;
 
-    firebase_func.get_user_data().then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) 
+    if(user != null)
+    {
+      uid = user.uid;
+    }
+
+    firebase_func.get_user_data(uid).then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) 
     {
 
       if (documentSnapshot.exists) 
@@ -32,9 +39,9 @@ class _Login_loadinge_state extends State<Login_loading>
         // Access the document's data
         Map<String, dynamic> data = documentSnapshot.data()!;
         
-        String accout_type = data['account type'];
+        String account_type = data['account type'];
 
-        switch(accout_type)
+        switch(account_type)
         {
 
           case 'voter':

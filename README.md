@@ -14,8 +14,8 @@ These are the files we can edit
 
 # To Do
 
-- [] add firebase to android
-- [] add firebase to ios
+- [x] add firebase to android
+- [x] add firebase to ios
 - [] create a sign up system
 - [] create a login system
 - [] create a dashboard fo admin accounts

@@ -30,7 +30,10 @@ class _Login_page_state extends State<Login_page>
     String email = email_contoller.text;
     String password = password_controller.text;
 
-    try
+    if(email.isNotEmpty && password.isNotEmpty)
+    {
+
+      try
     {
       firebase_func.loginWithEmailAndPassword(email, password);
     }
@@ -53,6 +56,19 @@ class _Login_page_state extends State<Login_page>
                   context,
                   MaterialPageRoute(builder: (context) => Login_loading())
                 );
+
+    }
+
+    }
+    else
+    {
+
+      const SnackBar snackBar = SnackBar
+              (
+                content: Text('Fill up all fields.' ),
+                behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
     }
 
@@ -202,11 +218,7 @@ class _Login_page_state extends State<Login_page>
                             onPressed: () 
                             {
 
-                              Navigator.push
-                              (
-                                context,
-                                MaterialPageRoute(builder: (context) => Admnin_home_page())
-                              );
+                             _login_button_press();
 
                             },
                             child: const Text('Login')

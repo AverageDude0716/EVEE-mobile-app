@@ -23,8 +23,13 @@ class Firebase_func
         password: password,
       );
       // User successfully signed up
-      User? user = userCredential.user;
-      // Handle the signed-up user
+      
+      await auth.signInWithEmailAndPassword
+      (
+        email: email,
+        password: password
+      );
+
     } 
     catch (e) 
     {
@@ -38,15 +43,13 @@ class Firebase_func
   {
 
     FirebaseFirestore db = FirebaseFirestore.instance;
-    User? user = auth.currentUser;
-    late String uid;
-
+    final user = auth.currentUser;
     if(user != null)
     {
-      uid = user.uid;
-    }
 
-    Map<String, Object> update = 
+      String uid = user.uid;
+
+      Map<String, Object> update = 
     {
 
       'last name' : last_name,
@@ -59,7 +62,7 @@ class Firebase_func
 
     };
 
-    db.collection("voters").doc(uid).set(update).then((value)
+    db.collection("voters").doc(user.uid).set(update).then((value)
     {
 
       
@@ -70,7 +73,21 @@ class Firebase_func
       
 
     });
-    
+
+    db.collection('users').doc(uid).set(update).then((value) 
+    {
+
+
+
+    }).catchError((error) 
+    {
+
+
+      
+    });
+
+    }
+
   }
 
 
@@ -79,15 +96,13 @@ class Firebase_func
   {
 
     FirebaseFirestore db = FirebaseFirestore.instance;
-    User? user = auth.currentUser;
-    late String uid;
-
+    final user = auth.currentUser;
     if(user != null)
     {
-      uid = user.uid;
-    }
 
-    Map<String, Object> update = 
+      String uid = user.uid;
+
+      Map<String, Object> update = 
     {
 
       'last name' : last_name,
@@ -96,11 +111,11 @@ class Firebase_func
       'gender' : gender,
       'email' : email,
       'password' : password,
-      'account type': 'admin',
+      'account type': 'voter',
 
     };
 
-    db.collection("admins").doc(uid).set(update).then((value)
+    db.collection("voters").doc(user.uid).set(update).then((value)
     {
 
       
@@ -111,12 +126,26 @@ class Firebase_func
       
 
     });
+
+    db.collection('users').doc(uid).set(update).then((value) 
+    {
+
+
+
+    }).catchError((error) 
+    {
+
+
+      
+    });
+
+    }
     
   }
 
 
-  void save_user( String last_name, String first_name, int birth_date,
-   String gender, String email, String password)
+  /*void save_user( String last_name, String first_name, int birth_date,
+   String gender, String email, String password, String type)
   {
 
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -127,6 +156,7 @@ class Firebase_func
     {
       uid = user.uid;
     }
+    else{print('not signed in');}
 
     Map<String, Object> update = 
     {
@@ -137,7 +167,7 @@ class Firebase_func
       'gender' : gender,
       'email' : email,
       'password' : password,
-      'account type': 'admin',
+      'account type': type,
 
     };
 
@@ -153,7 +183,7 @@ class Firebase_func
 
     });
     
-  }
+  }*/
 
 
   Future<void> loginWithEmailAndPassword(String email, String password) async {
@@ -176,11 +206,10 @@ class Firebase_func
 }
 
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> get_user_data() async 
+  Future<DocumentSnapshot<Map<String, dynamic>>> get_user_data(String uid) async 
   {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    User? user = auth.currentUser;
-    String? uid = user?.uid;
+    
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await db.collection('users').doc(uid).get();
     return documentSnapshot;
