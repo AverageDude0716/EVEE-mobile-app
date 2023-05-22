@@ -58,7 +58,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
             try
             {
-              firebase_func.signUpWithEmailAndPassword(email, password);
+              firebase_func.signUpWithEmailAndPassword(last_name, first_name, birth_date, gender,'voter',  email, password);
             }
             catch(e)
             {
@@ -72,29 +72,11 @@ class _Create_voter_page_state extends State<Create_voter_page>
             finally
             {
 
-              try
-              {
-                firebase_func.save_voter(last_name, first_name, birth_date, gender, email, password);
-              }
-              catch(e)
-              {
-                SnackBar snackBar = SnackBar
-                (
-                  content: Text('Sign Up failed. $e' ),
-                  behavior: SnackBarBehavior.floating,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-              finally
-              {
-
-                
-                Navigator.push
+              Navigator.push
                 (
                   context,
                   MaterialPageRoute(builder: (context) => Voter_dashboard_page())
                 );
-              }
 
             }
 

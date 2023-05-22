@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -14,7 +13,8 @@ class Firebase_func
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 
-  Future<void> signUpWithEmailAndPassword(String email, String password) async 
+  Future<void> signUpWithEmailAndPassword(String last_name, String first_name, int birth_date,
+   String gender,String type, String email, String password) async 
   {
     try 
     {
@@ -29,6 +29,15 @@ class Firebase_func
         email: email,
         password: password
       );
+
+      if(type == 'voter')
+      {
+        save_voter(last_name, first_name, birth_date, gender, email, password);
+      }
+      else if(type == 'admin')
+      {
+        save_admin(last_name, first_name, birth_date, gender, email, password);
+      }
 
     } 
     catch (e) 
@@ -62,7 +71,7 @@ class Firebase_func
 
     };
 
-    db.collection("voters").doc(user.uid).set(update).then((value)
+    db.collection("voters").doc(uid).set(update).then((value)
     {
 
       
@@ -115,7 +124,7 @@ class Firebase_func
 
     };
 
-    db.collection("voters").doc(user.uid).set(update).then((value)
+    db.collection("voters").doc(uid).set(update).then((value)
     {
 
       

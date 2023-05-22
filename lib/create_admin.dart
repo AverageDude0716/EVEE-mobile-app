@@ -58,7 +58,7 @@ TextEditingController last_name_controller = TextEditingController();
 
             try
             {
-              firebase_func.signUpWithEmailAndPassword(email, password);
+              firebase_func.signUpWithEmailAndPassword(last_name, first_name, birth_date, gender,'voter', email, password);
             }
             catch(e)
             {
@@ -72,28 +72,11 @@ TextEditingController last_name_controller = TextEditingController();
             finally
             {
 
-              try
-              {
-                firebase_func.save_admin(last_name, first_name, birth_date, gender, email, password);
-              }
-              catch(e)
-              {
-                SnackBar snackBar = SnackBar
-                (
-                  content: Text('Sign Up failed. $e' ),
-                  behavior: SnackBarBehavior.floating,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-              finally
-              {
-                
-                Navigator.push
+              Navigator.push
                 (
                   context,
                   MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
                 );
-              }
 
             }
 
