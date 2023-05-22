@@ -17,15 +17,13 @@ class Admnin_dashboard_page extends StatefulWidget
 class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
 {
   int _selectedIndex = 0;  
-  
-
   static final List<Widget> _widgetOptions = <Widget>
   [  
 
-    Admnin_home_page(),
-    Admin_profile_page(),
-    Settings_page(),
-    
+   Admnin_home_page(),
+   Admin_profile_page(),
+   Settings_page(),
+
   ];  
 
   
@@ -47,18 +45,10 @@ class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
     return Scaffold
     (
 
-      body: SingleChildScrollView
+      body: Center
       (
-
-        child: Container
-        (
-
-          color: light_yellow,
-          width: screenWidth,
-
-          child: _widgetOptions.elementAt(_selectedIndex),
-
-        ),
+       
+        child: _widgetOptions.elementAt(_selectedIndex)
 
       ),
 
@@ -77,13 +67,13 @@ class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
           BottomNavigationBarItem(  
             icon: Icon(Icons.person),  
             label: 'Profile',  
-            backgroundColor: light_violet 
+            backgroundColor: light_violet  
           ), 
 
           BottomNavigationBarItem(  
             icon: Icon(Icons.settings),  
             label: 'Settings',  
-            backgroundColor: light_violet 
+            backgroundColor: light_violet
           ),  
 
         ], 

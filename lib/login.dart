@@ -81,177 +81,186 @@ class _Login_page_state extends State<Login_page>
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
     
-    return  Scaffold
+    return  WillPopScope
     (
-
-      body: SingleChildScrollView
+      child: Scaffold
       (
 
-        child: Container
-              (
+        body: SingleChildScrollView
+        (
 
-                height: screenHeight,
-                width: screenWidth,
-
-                decoration: const BoxDecoration
+          child: Container
                 (
 
-                  image: DecorationImage
+                  height: screenHeight,
+                  width: screenWidth,
+
+                  decoration: const BoxDecoration
                   (
-                    image: AssetImage('assets/background_img/background_1.jpg'),
-                    fit: BoxFit.cover,
-                  )
 
-                ),
-
-
-                child: GestureDetector
-                (
-
-                    onTap: () 
-                    {
-                      FocusScope.of(context).unfocus();
-                    },
-
-                    child: Container
+                    image: DecorationImage
                     (
+                      image: AssetImage('assets/background_img/background_1.jpg'),
+                      fit: BoxFit.cover,
+                    )
 
-                      //form design
-                      height: screenHeight,
-                      width: screenWidth,
-                      margin: const EdgeInsets.all(30.0),
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration
+                  ),
+
+
+                  child: GestureDetector
+                  (
+
+                      onTap: () 
+                      {
+                        FocusScope.of(context).unfocus();
+                      },
+
+                      child: Container
                       (
 
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.0)
+                        //form design
+                        height: screenHeight,
+                        width: screenWidth,
+                        margin: const EdgeInsets.all(30.0),
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration
+                        (
 
-                      ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20.0)
 
-                      child: Column
-                      (
+                        ),
 
-                        children: 
-                        [
+                        child: Column
+                        (
 
-                          //header
-                          const Text
-                          (
-                            'Login',
-                            style: TextStyle
+                          children: 
+                          [
+
+                            //header
+                            const Text
                             (
-                              color: Colors.black,
-                              fontSize: 48.0,
-                              decoration: TextDecoration.none
-                            ),
-                          ),//header
-
-                          //email textfield
-                          Container
-                          (
-
-                            margin: const EdgeInsets.fromLTRB(0, 100.0, 0, 0),
-
-                            child:  TextField
-                            (
-                              controller: email_contoller,
-                              decoration: const InputDecoration
+                              'Login',
+                              style: TextStyle
                               (
+                                color: Colors.black,
+                                fontSize: 48.0,
+                                decoration: TextDecoration.none
+                              ),
+                            ),//header
 
-                                hintText: 'Enter E-mail',
-                                border: OutlineInputBorder
+                            //email textfield
+                            Container
+                            (
+
+                              margin: const EdgeInsets.fromLTRB(0, 100.0, 0, 0),
+
+                              child:  TextField
+                              (
+                                controller: email_contoller,
+                                decoration: const InputDecoration
                                 (
-                                  borderSide: BorderSide(color: light_gray),
-                                ),
-                                enabledBorder: OutlineInputBorder
-                                (
-                                  borderSide: BorderSide(color: light_gray),
+
+                                  hintText: 'Enter E-mail',
+                                  border: OutlineInputBorder
+                                  (
+                                    borderSide: BorderSide(color: light_gray),
+                                  ),
+                                  enabledBorder: OutlineInputBorder
+                                  (
+                                    borderSide: BorderSide(color: light_gray),
+                                  ),
+
                                 ),
 
                               ),
 
                             ),
 
-                          ),
+                            //password textfield
+                            Container
+                            (
 
-                          //password textfield
-                          Container
-                          (
+                              margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 100),
 
-                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 100),
-
-                            child: TextField
-                                  (
-                                    controller: password_controller,
-                                    obscureText: true,
-                                    decoration: InputDecoration
+                              child: TextField
                                     (
-                                      hintText: 'Enter Password',
-
-                                      border: const OutlineInputBorder
+                                      controller: password_controller,
+                                      obscureText: true,
+                                      decoration: InputDecoration
                                       (
-                                        borderSide: BorderSide(color: light_gray),
-                                        
+                                        hintText: 'Enter Password',
+
+                                        border: const OutlineInputBorder
+                                        (
+                                          borderSide: BorderSide(color: light_gray),
+                                          
+                                        ),
+
+                                        enabledBorder: const OutlineInputBorder
+                                        (
+                                          borderSide: BorderSide(color: light_gray)
+                                        ),
+
+                                        suffixIcon: IconButton
+                                        (
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.visibility)
+                                        )
                                       ),
+                                      
 
-                                      enabledBorder: const OutlineInputBorder
-                                      (
-                                        borderSide: BorderSide(color: light_gray)
-                                      ),
-
-                                      suffixIcon: IconButton
-                                      (
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.visibility)
-                                      )
                                     ),
-                                    
 
-                                  ),
+                            ),
 
-                          ),
+                            // login button
+                            ElevatedButton
+                            (
+                              onPressed: () 
+                              {
 
-                          // login button
-                          ElevatedButton
-                          (
-                            onPressed: () 
-                            {
+                              _login_button_press();
 
-                             _login_button_press();
+                              },
+                              child: const Text('Login')
+                            ),
 
-                            },
-                            child: const Text('Login')
-                          ),
+                            //to sign up
+                            ElevatedButton
+                            (
+                              onPressed: () 
+                              {
 
-                          //to sign up
-                          ElevatedButton
-                          (
-                            onPressed: () 
-                            {
+                                Navigator.push
+                                (
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Create_account_page())
+                                );
 
-                              Navigator.push
-                              (
-                                context,
-                                MaterialPageRoute(builder: (context) => Create_account_page())
-                              );
+                              },
+                              child: const Text('Dont have an account? Sign in')
+                            )
+        
+                          ],
 
-                            },
-                            child: const Text('Dont have an account? Sign in')
-                          )
-      
-                        ],
+                        ),
 
                       ),
 
-                    ),
+                  ),//form
 
-                ),//form
+                ),
 
-              ),
+        ),
 
-      ),
-
+      ), 
+      
+      
+      onWillPop: () async
+      {
+        return false;
+      }
     );
 
   }

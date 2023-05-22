@@ -22,77 +22,86 @@ class _Landing_page_state extends State<Landing_page>
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    return   Scaffold
+    return   WillPopScope
     (
-
-      body: Center
+      child: Scaffold
       (
-        
-        child: Container
+
+        body: Center
         (
-          height: screenHeight,
-          width: screenWidth,
-
-          decoration: const BoxDecoration
+          
+          child: Container
           (
+            height: screenHeight,
+            width: screenWidth,
 
-            image: DecorationImage
+            decoration: const BoxDecoration
             (
-              image: AssetImage('assets/background_img/background_1.jpg'),
-              fit: BoxFit.cover,
-            )
 
-          ),
-
-          child: Column
-          (
-
-            children:  [
-
-              Container
+              image: DecorationImage
               (
-                margin: EdgeInsets.fromLTRB(0, 200, 0, 75.0),
-
-                  child: const Text
-                  (
-
-                    'Evee',
-                    style: TextStyle
-                    (
-                      fontSize: 48.0,
-                    ),
-                  ),
-
-              ),
-
-              ElevatedButton
-              (
-
-                onPressed: ()
-                {
-
-                  Navigator.push
-                  (
-                    context,
-                    MaterialPageRoute(builder: (context) => Login_page())
-                  );
-
-                },
-                child: const Text
-                (
-                  'Login'
-                )
-
+                image: AssetImage('assets/background_img/background_1.jpg'),
+                fit: BoxFit.cover,
               )
 
-            ],
+            ),
+
+            child: Column
+            (
+
+              children:  [
+
+                Container
+                (
+                  margin: EdgeInsets.fromLTRB(0, 200, 0, 75.0),
+
+                    child: const Text
+                    (
+
+                      'Evee',
+                      style: TextStyle
+                      (
+                        fontSize: 48.0,
+                      ),
+                    ),
+
+                ),
+
+                ElevatedButton
+                (
+
+                  onPressed: ()
+                  {
+
+                    Navigator.push
+                    (
+                      context,
+                      MaterialPageRoute(builder: (context) => Login_page())
+                    );
+
+                  },
+                  child: const Text
+                  (
+                    'Login'
+                  )
+
+                )
+
+              ],
+
+            ),
 
           ),
 
         ),
-
+      
       ),
-     
+
+
+      onWillPop: () async
+      {
+        return false;
+      }
     );
 
   }

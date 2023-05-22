@@ -24,79 +24,88 @@ class _Create_account_page_state extends State<Create_account_page>
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold
+    return WillPopScope
     (
-
-      body: Center
+      child: Scaffold
       (
 
-        child: Container
+        body: Center
         (
 
-          height: screenHeight,
-          width: screenWidth,
+          child: Container
+          (
 
-          decoration: const BoxDecoration
-                (
+            height: screenHeight,
+            width: screenWidth,
 
-                  image: DecorationImage
+            decoration: const BoxDecoration
                   (
-                    image: AssetImage('assets/background_img/background_1.jpg'),
-                    fit: BoxFit.cover,
-                  )
+
+                    image: DecorationImage
+                    (
+                      image: AssetImage('assets/background_img/background_1.jpg'),
+                      fit: BoxFit.cover,
+                    )
+
+                  ),
+
+
+            child: Column
+            (
+
+              children: 
+              [
+                Container
+                (
+                  margin: const EdgeInsets.fromLTRB(0, 100, 0, 50),
+
+                  child: const Text('What type of account would you like to make?'),
 
                 ),
 
 
-          child: Column
-          (
-
-            children: 
-            [
-              Container
-              (
-                margin: const EdgeInsets.fromLTRB(0, 100, 0, 50),
-
-                child: const Text('What type of account would you like to make?'),
-
-              ),
-
-
-              ElevatedButton
-              (
-                onPressed: () 
-                {
-                  Navigator.push
-                              (
-                                context,
-                                MaterialPageRoute(builder: (context) => Create_voter_page())
-                              );
-                },
-                child: const Text('Voter')
-              ),
+                ElevatedButton
+                (
+                  onPressed: () 
+                  {
+                    Navigator.push
+                                (
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Create_voter_page())
+                                );
+                  },
+                  child: const Text('Voter')
+                ),
 
 
-              ElevatedButton
-              (
-                onPressed: () 
-                {
-                  Navigator.push
-                              (
-                                context,
-                                MaterialPageRoute(builder: (context) => Create_admin_page())
-                              );
-                },
-                child: const Text('Admin'),
-              )
+                ElevatedButton
+                (
+                  onPressed: () 
+                  {
+                    Navigator.push
+                                (
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Create_admin_page())
+                                );
+                  },
+                  child: const Text('Admin'),
+                )
 
-            ],
+              ],
 
-          ),      
+            ),      
+
+          ),
 
         ),
 
       ),
 
+
+      onWillPop: () async
+      {
+        return false;
+      }
     );
 
   }

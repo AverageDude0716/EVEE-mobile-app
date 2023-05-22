@@ -27,13 +27,20 @@ class _Admin_home_page_state extends State<Admnin_home_page>
       body: SingleChildScrollView
       (
 
-        child: Container
+        child: Column
         (
 
-          color: light_yellow,
-          width: screenWidth,
+          children: 
+          [
 
-          child: Text('admin Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+            Container
+            (
+
+              child: Text('admin Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+
+            ),
+
+          ],
 
         ),
 

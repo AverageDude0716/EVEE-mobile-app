@@ -120,11 +120,11 @@ class Firebase_func
       'gender' : gender,
       'email' : email,
       'password' : password,
-      'account type': 'voter',
+      'account type': 'admin',
 
     };
 
-    db.collection("voters").doc(uid).set(update).then((value)
+    db.collection("admin").doc(uid).set(update).then((value)
     {
 
       
@@ -151,48 +151,6 @@ class Firebase_func
     }
     
   }
-
-
-  /*void save_user( String last_name, String first_name, int birth_date,
-   String gender, String email, String password, String type)
-  {
-
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    User? user = auth.currentUser;
-    late String uid;
-
-    if(user != null)
-    {
-      uid = user.uid;
-    }
-    else{print('not signed in');}
-
-    Map<String, Object> update = 
-    {
-
-      'last name' : last_name,
-      'first name' : first_name,
-      'birthdate' : birth_date,
-      'gender' : gender,
-      'email' : email,
-      'password' : password,
-      'account type': type,
-
-    };
-
-    db.collection('users').doc(uid).set(update).then((value)
-    {
-
-      
-    
-    }).catchError((error) 
-    {
-
-      
-
-    });
-    
-  }*/
 
 
   Future<void> loginWithEmailAndPassword(String email, String password) async {
