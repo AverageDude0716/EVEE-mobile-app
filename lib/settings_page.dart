@@ -38,6 +38,7 @@ class _Settings_page_state extends State<Settings_page>
             Container
             (
               width: screenWidth,
+              margin: const EdgeInsets.fromLTRB(0, 20, 0, 5),
               padding: const EdgeInsets.all(10),
 
               child: GestureDetector

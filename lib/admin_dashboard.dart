@@ -42,49 +42,60 @@ class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold
+    return WillPopScope
     (
+      
+      onWillPop: () async
+      {
+        return false;
+      },
 
-      body: Center
+
+      child: Scaffold
       (
-       
-        child: _widgetOptions.elementAt(_selectedIndex)
+
+        body: Center
+        (
+        
+          child: _widgetOptions.elementAt(_selectedIndex)
+
+        ),
+
+
+        bottomNavigationBar:  BottomNavigationBar
+        (  
+          items: const <BottomNavigationBarItem>
+          [  
+
+            BottomNavigationBarItem(  
+              icon: Icon(Icons.home),  
+              label: 'Home',  
+              backgroundColor: light_violet 
+            ), 
+
+            BottomNavigationBarItem(  
+              icon: Icon(Icons.person),  
+              label: 'Profile',  
+              backgroundColor: light_violet  
+            ), 
+
+            BottomNavigationBarItem(  
+              icon: Icon(Icons.settings),  
+              label: 'Settings',  
+              backgroundColor: light_violet
+            ),  
+
+          ], 
+
+          type: BottomNavigationBarType.shifting,  
+          currentIndex: _selectedIndex,  
+          selectedItemColor: Colors.black,  
+          iconSize: 40,  
+          onTap: _onItemTapped,  
+          elevation: 5  ,
+        )
 
       ),
-
-
-      bottomNavigationBar:  BottomNavigationBar
-      (  
-        items: const <BottomNavigationBarItem>
-        [  
-
-          BottomNavigationBarItem(  
-            icon: Icon(Icons.home),  
-            label: 'Home',  
-            backgroundColor: light_violet 
-          ), 
-
-          BottomNavigationBarItem(  
-            icon: Icon(Icons.person),  
-            label: 'Profile',  
-            backgroundColor: light_violet  
-          ), 
-
-          BottomNavigationBarItem(  
-            icon: Icon(Icons.settings),  
-            label: 'Settings',  
-            backgroundColor: light_violet
-          ),  
-
-        ], 
-
-        type: BottomNavigationBarType.shifting,  
-        currentIndex: _selectedIndex,  
-        selectedItemColor: Colors.black,  
-        iconSize: 40,  
-        onTap: _onItemTapped,  
-        elevation: 5  ,
-      )
 
     );
 
