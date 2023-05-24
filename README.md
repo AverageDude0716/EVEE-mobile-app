@@ -16,8 +16,8 @@ These are the files we can edit
 
 - [x] add firebase to android
 - [x] add firebase to ios
-- [] create a sign up system
-- [] create a login system
+- [x] create a sign up system
+- [x] create a login system
 - [] create a dashboard fo admin accounts
 - [] create a dashboard for voter accounts
 - [] create a authentication system

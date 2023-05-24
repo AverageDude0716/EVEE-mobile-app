@@ -121,6 +121,7 @@ class Firebase_func
       'email' : email,
       'password' : password,
       'account type': 'admin',
+      'polls': 'none',
 
     };
 
