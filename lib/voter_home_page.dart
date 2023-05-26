@@ -52,7 +52,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
       Navigator.push
       (
         context, 
-        MaterialPageRoute(builder: (context) =>  Poll_voting_page())
+        MaterialPageRoute(builder: (context) =>  Poll_voting_page(id: documentId,))
       );
     } 
     else 
