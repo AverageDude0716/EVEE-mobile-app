@@ -1,3 +1,5 @@
+import 'package:evee/admin_dashboard.dart';
+import 'package:evee/firebase_functions.dart';
 import 'package:evee/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
@@ -13,8 +15,16 @@ class Poll_create_page extends StatefulWidget
 
 class _Poll_create_page_state extends State<Poll_create_page>
 {
+  Firebase_func firebase_func = Firebase_func();
+
   String selectedOption = 'Multiple Choice';
-  List<String> options = ['Multiple Choice', 'Essay', 'Rank Choice', 'Single Choice'];
+  List<String> options = ['Multiple Choice', 'Essay', 'Rank Choice' /*, 'Single Choice'*/];
+
+  int rank_selected = 0;
+
+  bool option1 = false, option2 = false, option3 = false, option4 = false;
+
+  int question_num = 1;
 
   TextEditingController poll_name_controller  = TextEditingController();
 
@@ -23,6 +33,104 @@ class _Poll_create_page_state extends State<Poll_create_page>
   TextEditingController option2_controller = TextEditingController();
 
   TextEditingController essay_question_controller = TextEditingController();
+
+  TextEditingController rank_question_controller = TextEditingController();
+
+
+  void save(BuildContext context)
+  {
+    String poll_name = poll_name_controller.text;
+    List<List<String>> questions = [];
+
+    if(poll_name.isNotEmpty)
+    {
+
+      for(int x = 0; x < question_num; x++)
+    {
+
+      String type = selectedOption;
+
+      late String question, op1, op2;
+
+      switch(type)
+      {
+
+        case 'Multiple Choice':
+          question = multiple_choice_question_controller.text;
+          op1 = option1_controller.text;
+          op2 = option2_controller.text;
+
+          if(question.isEmpty || op1.isEmpty || op2.isEmpty)
+          {
+            SnackBar snackBar = const SnackBar
+              (
+                content: Text('fill up all fields' ),
+                behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+          break;
+
+        case 'Essay':
+          question = essay_question_controller.text;
+          op1 = '0';
+          op2 = '0';
+
+          if(question.isEmpty)
+          {
+            SnackBar snackBar = const SnackBar
+              (
+                content: Text('fill up all fields' ),
+                behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+          break;
+
+        case 'Rank Choice':
+          question = rank_question_controller.text;
+          op1 = '0';
+          op2 = '0';
+          if(question.isEmpty)
+          {
+            SnackBar snackBar = const SnackBar
+              (
+                content: Text('fill up all fields' ),
+                behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+          break;    
+
+      }
+      List<String> qst = [type, question, op1, op2];
+
+      questions.add(qst);
+
+    }
+
+    
+    firebase_func.save_poll(poll_name, questions);
+
+    }
+    else
+    {
+      SnackBar snackBar = const SnackBar
+              (
+                content: Text('fill up all fields' ),
+                behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+  }
+
+
+  void rank_select(int index) {
+    setState(() {
+      rank_selected = index;
+    });
+  }
 
   
   @override
@@ -295,7 +403,7 @@ class _Poll_create_page_state extends State<Poll_create_page>
                                   decoration: InputDecoration
                                   (
 
-                                    hintText: 'Enter Poll Name',
+                                    hintText: 'User Input goes here',
                                     border: OutlineInputBorder
                                     (
                                       borderSide: BorderSide(color: light_gray),
@@ -320,18 +428,122 @@ class _Poll_create_page_state extends State<Poll_create_page>
                           (
 
                             visible: selectedOption == 'Rank Choice',
-                            child: Text('rank')
+                            child: Column
+                            (
+
+                              children: 
+                              [
+
+                                TextField
+                                (
+
+                                  controller: rank_question_controller,
+
+                                  decoration: const InputDecoration
+                                  (
+
+                                    hintText: 'Enter Question',
+                                    border: OutlineInputBorder
+                                    (
+                                      borderSide: BorderSide(color: light_gray),
+                                    ),
+                                    enabledBorder: OutlineInputBorder
+                                    (
+                                      borderSide: BorderSide(color: light_gray),
+                                    ),
+
+                                  ),
+
+                                ),
+
+                                Row
+                                (
+
+                                  children: 
+                                  [
+
+                                    //option1
+                                    Expanded
+                                    (
+                                      flex: 1,
+                                      child: ElevatedButton
+                                      (
+
+                                        onPressed: () => rank_select(0),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: rank_selected == 0 ? Colors.green : null,
+                                        ),
+                                        child: const Text('1'),
+
+                                      ),
+                                    ),
+
+                                    //option2
+                                    Expanded
+                                    (
+                                      flex: 1,
+                                      child: ElevatedButton
+                                      (
+
+                                        onPressed: () => rank_select(1),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: rank_selected == 1 ? Colors.green : null,
+                                        ),
+                                        child: const Text('2'),
+
+                                      )
+                                    ),
+
+                                    //option3
+                                    Expanded
+                                    (
+                                      flex: 1,
+                                      child: ElevatedButton
+                                      (
+
+                                        onPressed: () => rank_select(2),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: rank_selected == 2 ? Colors.green : null,
+                                        ),
+                                        child: const Text('3'),
+
+                                      )
+                                    ),
+
+                                    //option4
+                                    Expanded
+                                    (
+                                      flex: 1,
+                                      child: ElevatedButton
+                                      (
+
+                                        onPressed: () => rank_select(3),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: rank_selected == 3 ? Colors.green : null,
+                                        ),
+                                        child: const Text('4'),
+
+                                      )
+                                    ),
+
+                                  ],
+
+                                )
+
+                              ],
+
+                            )
 
                           ),
 
                           //single
-                          Visibility
+                          /*Visibility
                           (
 
                             visible: selectedOption == 'Single Choice',
                             child: Text('Single')
 
-                          ),
+                          ),*/
 
                         ],
 
@@ -344,10 +556,46 @@ class _Poll_create_page_state extends State<Poll_create_page>
               ),
 
               //save
-              Container(),
+              Container
+              (
+
+                child: ElevatedButton
+                (
+                  onPressed: () 
+                  {
+
+                    save(context);
+                    Navigator.push
+                    (
+                      context, 
+                      MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
+                    );
+
+                  },
+                  child: const Text('Save'),
+                )
+
+              ),
 
               //cancel
-              Container(),
+              Container
+              (
+
+                child: ElevatedButton
+                (
+                  onPressed: () 
+                  {
+                    Navigator.push
+                    (
+                      context, 
+                      MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
+                    );
+                  },
+                  child: const Text('Cancel'),
+                )
+
+
+              ),
 
             ],
 

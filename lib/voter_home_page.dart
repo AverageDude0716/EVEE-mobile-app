@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evee/firebase_functions.dart';
 import 'package:evee/landing_page.dart';
 import 'package:flutter/material.dart';
+import 'package:evee/poll_voting_page.dart';
 import 'styles.dart';
 
 
@@ -11,26 +14,71 @@ class Voter_home_page extends StatefulWidget
 
 }
 
-class _Voter_home_page_state extends State<Voter_home_page>
+class _Voter_home_page_state extends State<Voter_home_page> 
 {
   TextEditingController poll_id_input_controller = TextEditingController();
 
+  Future<List<String>> fetchDocuments() async 
+  {
+    CollectionReference collection =
+        FirebaseFirestore.instance.collection('polls');
+
+    QuerySnapshot snapshot = await collection.get();
+
+    List<String> polls = [];
+
+    for (var doc in snapshot.docs)
+    {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      String poll_name = data['poll name'];
+      polls.add(poll_name);
+    }
+
+    return polls;
+  }
+
+
+
+  void fetchDocumentById(BuildContext context, String documentId) async 
+  {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('polls')
+        .doc(documentId)
+        .get();
+
+    if (snapshot.exists) 
+    {
+      // ignore: use_build_context_synchronously
+      Navigator.push
+      (
+        context, 
+        MaterialPageRoute(builder: (context) =>  Poll_voting_page())
+      );
+    } 
+    else 
+    {
+       SnackBar snackBar = const SnackBar
+                          (
+                            content: Text('Poll Not found' ),
+                            behavior: SnackBarBehavior.floating,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
 
   @override
-  Widget build(BuildContext context)
+  Widget build(BuildContext context) 
   {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold
     (
-
       body: SingleChildScrollView
       (
-
         child: GestureDetector
         (
-
           onTap: () 
           {
             FocusScope.of(context).unfocus();
@@ -38,83 +86,114 @@ class _Voter_home_page_state extends State<Voter_home_page>
 
           child: Column
           (
-
             children: 
             [
-
               Container
               (
-
                 margin: const EdgeInsets.fromLTRB(30, 30, 30, 30),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration
                 (
-
                   color: light_yellow,
-                  borderRadius: BorderRadius.circular(20.0)
-
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
-
-                child: TextField
+                child: Column
                 (
-
-                  controller: poll_id_input_controller,
-
-                  decoration: const InputDecoration
-                  (
-
-                    hintText: 'Enter Poll ID',
-                    border: OutlineInputBorder
+                  children: 
+                  [
+                    TextField
                     (
-                      borderSide: BorderSide(color: light_gray),
+                      controller: poll_id_input_controller,
+                      decoration: const InputDecoration
+                      (
+                        hintText: 'Enter Poll ID',
+                        border: OutlineInputBorder
+                        (
+                          borderSide: BorderSide(color: light_gray),
+                        ),
+                        enabledBorder: OutlineInputBorder
+                        (
+                          borderSide: BorderSide(color: light_gray),
+                        ),
+                      ),
                     ),
-                    enabledBorder: OutlineInputBorder
+                    ElevatedButton
                     (
-                      borderSide: BorderSide(color: light_gray),
+                      onPressed: () 
+                      {
+
+                        String poll_id_input = poll_id_input_controller.text;
+
+                        fetchDocumentById(context,poll_id_input);
+                        
+
+                      },
+                      child: const Text('Vote'),
                     ),
-
-                  ),
-                              
-
+                  ],
                 ),
-
               ),
-
-
-              //poll header
               Container
               (
-                child: const Text('polls'),
-              ),
-
-
-              //list
-              Container
-              (
-
-                child: ListView.builder
+                child: const Text
                 (
-                  itemBuilder: (BuildContext context, int index) 
+                  'Polls',
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                ),
+              ),
+              FutureBuilder<List<String>>
+              (
+                future: fetchDocuments(),
+                builder: (context, snapshot) 
+                {
+                  if (snapshot.connectionState == ConnectionState.waiting) 
                   {
-
-                    
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasData) 
+                  {
+                    List<String> polls = snapshot.data!;
+                    return Container
+                    (
+                      height: screenHeight * 0.5,
+                      child: ListView.builder
+                      (
+                        itemCount: polls.length,
+                        itemBuilder: (BuildContext context, int index) 
+                        {
+                          return Container
+                          (
+                            margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration
+                            (
+                              color: light_yellow,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text
+                            (
+                              polls[index],
+                              style: const TextStyle
+                              (
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  } 
+                  else 
+                  {
+                    return const Text('Failed to fetch polls.');
                   }
-                )
-
+                },
               ),
-
-              
-              
             ],
-
           ),
-
         ),
-
       ),
-
     );
-
   }
-
 }
+

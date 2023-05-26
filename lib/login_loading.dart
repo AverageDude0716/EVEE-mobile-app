@@ -24,7 +24,7 @@ class _Login_loadinge_state extends State<Login_loading>
   void load(BuildContext context )
   {
     User? user = auth.currentUser;
-    late String uid;
+    String uid = 'none';
 
     if(user != null)
     {
