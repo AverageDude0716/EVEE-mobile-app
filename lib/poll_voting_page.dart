@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evee/admin_dashboard.dart';
 import 'package:evee/firebase_functions.dart';
 import 'package:evee/landing_page.dart';
@@ -114,318 +115,372 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
         child: SingleChildScrollView
         (
 
-          child: Column
-          (
+            child: Column
+            (
+              mainAxisSize: MainAxisSize.min,
             
+              children: 
+              [
 
-            children: 
-            [
-
-              //poll name
-              Container
-              (
-
-                margin: const EdgeInsets.all(30),
-                padding: const EdgeInsets.all(20),
-                width: screenWidth,
-                alignment: Alignment.center,
-                decoration: BoxDecoration
+                //poll name
+                Container
                 (
 
-                  color: light_yellow,
-                  borderRadius: BorderRadius.circular(20)
+                  margin: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(20),
+                  width: screenWidth,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration
+                  (
+
+                    color: light_yellow,
+                    borderRadius: BorderRadius.circular(20)
+
+                  ),
+
+                  child: Text('data')
 
                 ),
 
-                child: Text('data')
 
-              ),
 
-              //questions
-              Container
-              (
-                width: screenWidth,
-                margin: const EdgeInsets.fromLTRB(30, 0, 30, 30),
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration
+
+                //questions
+                Container
                 (
+                  height: screenHeight * 0.5,
 
-                  color: light_yellow,
-                  borderRadius: BorderRadius.circular(20)
+                  child: StreamBuilder<QuerySnapshot>
+                  (
+                    stream: FirebaseFirestore.instance.collection('polls').doc(poll_id).collection('questions').snapshots(),
+                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) 
+                    {
+                      if (snapshot.hasError) 
+                      {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                ),
+                      if (snapshot.connectionState == ConnectionState.waiting) 
+                      {
+                        return CircularProgressIndicator();
+                      }
 
-                constraints: const BoxConstraints
-                (
+                      List<Container> containers = snapshot.data!.docs.map((QueryDocumentSnapshot document) 
+                      {
+                        Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
 
-                  minHeight: 300,
+                        if (data != null) 
+                        {
+                          String type = data['type'];
+                          String question = data['question'];
+                          
 
-                ),
-
-                child: Column
-                      (
-
-                        children: 
-                        [
-
-                          //multiple choice 
-                          Visibility
-                          (
-
-                            visible: selectedOption == 'Multiple Choice',
-                            child: Column
-                            (
-
-                              children: 
-                              [
-
-                                //question
-                                Container
+                          return Container
                                 (
-
-                                  margin: const EdgeInsets.fromLTRB(0, 30, 0, 10),
-
-                                  child: Text('data')
-
-                                ),
-
-                                //option1
-                                Container
-                                (
-
-                                  //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-
-                                  child: ElevatedButton
-                                      (
-
-                                        onPressed: () => multiple_choice_select(0),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: multiple_choice_selected == 0 ? Colors.green : Colors.blue,
-                                        ),
-                                        child: const Text('data'),
-
-                                      ),
-
-                                ),
-
-                                //option 2
-                                Container
-                                (
-
-                                  //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-
-                                  child: ElevatedButton
-                                      (
-
-                                        onPressed: () => multiple_choice_select(1),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: multiple_choice_selected == 1 ? Colors.green : Colors.blue,
-                                        ),
-                                        child: const Text('data'),
-
-                                      ),
-
-                                ),
-
-                              ],
-
-                            )
-
-                          ),
-
-                          //essay
-                          Visibility
-                          (
-
-                            visible: selectedOption == 'Essay',
-                            child: Column
-                            (
-
-                              children: 
-                              [
-
-                                Text('data'),
-
-                                TextField
-                                (
-                                  controller: essay_answer_controller,
-
-                                  decoration: const InputDecoration
+                                  width: screenWidth,
+                                  margin: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration
                                   (
 
-                                    hintText: 'User Input goes here',
-                                    border: OutlineInputBorder
-                                    (
-                                      borderSide: BorderSide(color: light_gray),
-                                    ),
-                                    enabledBorder: OutlineInputBorder
-                                    (
-                                      borderSide: BorderSide(color: light_gray),
-                                    ),
+                                    color: light_yellow,
+                                    borderRadius: BorderRadius.circular(20)
 
                                   ),
 
-                                ),
+                                  constraints: const BoxConstraints
+                                  (
 
-                              ],
+                                    minHeight: 300,
 
-                            )
+                                  ),
 
-                          ),
+                                  child: Column
+                                        (
 
-                          //rank
-                          Visibility
-                          (
+                                          children: 
+                                          [
 
-                            visible: selectedOption == 'Rank Choice',
-                            child: Column
-                            (
+                                            //multiple choice 
+                                            Visibility
+                                            (
 
-                              children: 
-                              [
+                                              visible: type == 'Multiple Choice',
+                                              child: Column
+                                              (
 
-                                Text('data'),
+                                                children: 
+                                                [
 
-                                Row
-                                (
+                                                  //question
+                                                  Container
+                                                  (
 
-                                  children: 
-                                  [
+                                                    margin: const EdgeInsets.fromLTRB(0, 30, 0, 10),
 
-                                    //option1
-                                    Expanded
-                                    (
-                                      flex: 1,
-                                      child: ElevatedButton
-                                      (
+                                                    child: Text(question)
 
-                                        onPressed: () => rank_select(0),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: rank_selected == 0 ? Colors.green : null,
+                                                  ),
+
+                                                  //option1
+                                                  Container
+                                                  (
+
+                                                    //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                                    child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => multiple_choice_select(0),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: multiple_choice_selected == 0 ? Colors.green : Colors.blue,
+                                                          ),
+                                                          child: const Text('data'),
+
+                                                        ),
+
+                                                  ),
+
+                                                  //option 2
+                                                  Container
+                                                  (
+
+                                                    //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                                    child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => multiple_choice_select(1),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: multiple_choice_selected == 1 ? Colors.green : Colors.blue,
+                                                          ),
+                                                          child: const Text('data'),
+
+                                                        ),
+
+                                                  ),
+
+                                                ],
+
+                                              )
+
+                                            ),
+
+                                            //essay
+                                            Visibility
+                                            (
+
+                                              visible: type == 'Essay',
+                                              child: Column
+                                              (
+
+                                                children: 
+                                                [
+
+                                                  Text(question),
+
+                                                  TextField
+                                                  (
+                                                    controller: essay_answer_controller,
+
+                                                    decoration: const InputDecoration
+                                                    (
+
+                                                      hintText: 'User Input goes here',
+                                                      border: OutlineInputBorder
+                                                      (
+                                                        borderSide: BorderSide(color: light_gray),
+                                                      ),
+                                                      enabledBorder: OutlineInputBorder
+                                                      (
+                                                        borderSide: BorderSide(color: light_gray),
+                                                      ),
+
+                                                    ),
+
+                                                  ),
+
+                                                ],
+
+                                              )
+
+                                            ),
+
+                                            //rank
+                                            Visibility
+                                            (
+
+                                              visible: type == 'Rank Choice',
+                                              child: Column
+                                              (
+
+                                                children: 
+                                                [
+
+                                                  Text(question),
+
+                                                  Row
+                                                  (
+
+                                                    children: 
+                                                    [
+
+                                                      //option1
+                                                      Expanded
+                                                      (
+                                                        flex: 1,
+                                                        child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => rank_select(0),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: rank_selected == 0 ? Colors.green : null,
+                                                          ),
+                                                          child: const Text('1'),
+
+                                                        ),
+                                                      ),
+
+                                                      //option2
+                                                      Expanded
+                                                      (
+                                                        flex: 1,
+                                                        child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => rank_select(1),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: rank_selected == 1 ? Colors.green : null,
+                                                          ),
+                                                          child: const Text('2'),
+
+                                                        )
+                                                      ),
+
+                                                      //option3
+                                                      Expanded
+                                                      (
+                                                        flex: 1,
+                                                        child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => rank_select(2),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: rank_selected == 2 ? Colors.green : null,
+                                                          ),
+                                                          child: const Text('3'),
+
+                                                        )
+                                                      ),
+
+                                                      //option4
+                                                      Expanded
+                                                      (
+                                                        flex: 1,
+                                                        child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => rank_select(3),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: rank_selected == 3 ? Colors.green : null,
+                                                          ),
+                                                          child: const Text('4'),
+
+                                                        )
+                                                      ),
+
+                                                    ],
+
+                                                  )
+
+                                                ],
+
+                                              )
+
+                                            ),
+
+                                            //single
+                                            /*Visibility
+                                            (
+
+                                              visible: type == 'Single Choice',
+                                              child: Text('Single')
+
+                                            ),*/
+
+                                          ],
+
                                         ),
-                                        child: const Text('1'),
 
-                                      ),
-                                    ),
+                                );
 
-                                    //option2
-                                    Expanded
-                                    (
-                                      flex: 1,
-                                      child: ElevatedButton
-                                      (
 
-                                        onPressed: () => rank_select(1),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: rank_selected == 1 ? Colors.green : null,
-                                        ),
-                                        child: const Text('2'),
+                        }
 
-                                      )
-                                    ),
+                        return Container(); // Return an empty container if data is null
+                      }).toList();
 
-                                    //option3
-                                    Expanded
-                                    (
-                                      flex: 1,
-                                      child: ElevatedButton
-                                      (
+                      return Container(
+                        constraints: BoxConstraints(maxHeight: screenHeight), // Provide a specific height constraint
+                        child: ListView.builder(
+                          itemCount: containers.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return containers[index];
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
 
-                                        onPressed: () => rank_select(2),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: rank_selected == 2 ? Colors.green : null,
-                                        ),
-                                        child: const Text('3'),
 
-                                      )
-                                    ),
 
-                                    //option4
-                                    Expanded
-                                    (
-                                      flex: 1,
-                                      child: ElevatedButton
-                                      (
 
-                                        onPressed: () => rank_select(3),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: rank_selected == 3 ? Colors.green : null,
-                                        ),
-                                        child: const Text('4'),
-
-                                      )
-                                    ),
-
-                                  ],
-
-                                )
-
-                              ],
-
-                            )
-
-                          ),
-
-                          //single
-                          /*Visibility
-                          (
-
-                            visible: selectedOption == 'Single Choice',
-                            child: Text('Single')
-
-                          ),*/
-
-                        ],
-
-                      ),
-
-              ),
-
-              //save
-              Container
-              (
-
-                child: ElevatedButton
+                //save
+                Container
                 (
-                  onPressed: () 
-                  {
 
-                    save(context);
-                    Navigator.push
-                    (
-                      context, 
-                      MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
-                    );
+                  child: ElevatedButton
+                  (
+                    onPressed: () 
+                    {
 
-                  },
-                  child: const Text('Save'),
-                )
+                      save(context);
+                      Navigator.push
+                      (
+                        context, 
+                        MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
+                      );
 
-              ),
+                    },
+                    child: const Text('Save'),
+                  )
 
-              //cancel
-              Container
-              (
+                ),
 
-                child: ElevatedButton
+                //cancel
+                Container
                 (
-                  onPressed: () 
-                  {
-                    Navigator.push
-                    (
-                      context, 
-                      MaterialPageRoute(builder: (context) => Voter_dashboard_page())
-                    );
-                  },
-                  child: const Text('Cancel'),
-                )
+
+                  child: ElevatedButton
+                  (
+                    onPressed: () 
+                    {
+                      Navigator.push
+                      (
+                        context, 
+                        MaterialPageRoute(builder: (context) => Voter_dashboard_page())
+                      );
+                    },
+                    child: const Text('Cancel'),
+                  )
 
 
-              ),
+                ),
 
-            ],
+              ],
 
-          ),
+            ),
 
         ),
 
@@ -436,3 +491,5 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   }
 
 }
+
+
