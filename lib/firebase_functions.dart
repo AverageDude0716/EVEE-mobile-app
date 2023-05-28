@@ -304,4 +304,23 @@ class Firebase_func
 
 
 
+ Future<DocumentSnapshot<Map<String, dynamic>>> get_poll_data(String uid) async 
+  {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await db.collection('polls').doc(uid).get();
+    return documentSnapshot;
+  }
+
+
+  Future<QuerySnapshot<Map<String, dynamic>>> get_question_data(String uid) async 
+  {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await db.collection('polls').doc(uid).collection('questions').orderBy(FieldPath.documentId).limit(1).get();
+    return querySnapshot;
+  }
+
 }

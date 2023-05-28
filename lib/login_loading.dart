@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evee/landing_page.dart';
+import 'package:evee/login.dart';
 import 'package:evee/voter_dashboard.dart';
 import 'package:evee/admin_dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,6 +71,11 @@ class _Login_loadinge_state extends State<Login_loading>
               behavior: SnackBarBehavior.floating,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+            Navigator.push
+            (context, 
+            MaterialPageRoute(builder: (context) =>  Login_page())
+            );
       }
 
     }).catchError((error) 

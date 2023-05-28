@@ -23,7 +23,7 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    late String uid;
+     String uid = 'placeholder';
     final user = auth.currentUser;
     if(user != null)
     {

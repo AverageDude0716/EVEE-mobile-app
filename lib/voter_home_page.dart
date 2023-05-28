@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evee/firebase_functions.dart';
 import 'package:evee/landing_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:evee/poll_voting_page.dart';
 import 'styles.dart';
@@ -17,6 +18,7 @@ class Voter_home_page extends StatefulWidget
 class _Voter_home_page_state extends State<Voter_home_page> 
 {
   TextEditingController poll_id_input_controller = TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<List<String>> fetchDocuments() async 
   {
@@ -49,11 +51,61 @@ class _Voter_home_page_state extends State<Voter_home_page>
     if (snapshot.exists) 
     {
       // ignore: use_build_context_synchronously
-      Navigator.push
-      (
-        context, 
-        MaterialPageRoute(builder: (context) =>  Poll_voting_page(id: documentId,))
-      );
+      FirebaseFirestore.instance
+    .collection('polls')
+    .doc('your_poll_document_id')
+    .collection('questions')
+    .limit(1)
+    .get()
+    .then((QuerySnapshot snapshot) 
+    {
+        if (snapshot.docs.isNotEmpty) {
+          DocumentSnapshot firstDocument = snapshot.docs.first;
+
+          User? user = auth.currentUser;
+          String uid = 'pl';
+
+          if(user != null)
+          {
+
+            uid = user.uid;
+
+            Map<String, dynamic>? data = firstDocument.data() as Map<String, dynamic>;
+
+            String respondents = data['respondents'];
+
+            List<String> respondents_list = respondents.split('/').where((respondents_list) => respondents_list.isNotEmpty).toList();
+
+            if(respondents_list.contains(uid))
+            {
+              SnackBar snackBar = const SnackBar
+                          (
+                            content: Text('you already voted on this poll' ),
+                            behavior: SnackBarBehavior.floating,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            else
+            {
+               Navigator.push
+                (
+                  context, 
+                  MaterialPageRoute(builder: (context) =>  Poll_voting_page(id: documentId,))
+                );
+            }
+
+          }
+          
+        } else {
+          // Subcollection is empty
+          // Handle the case when no documents are found in the subcollection
+        }
+      }).catchError((error) {
+        // Handle any potential errors
+      });
+
+
+
     } 
     else 
     {

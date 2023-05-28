@@ -3,6 +3,7 @@ import 'package:evee/admin_dashboard.dart';
 import 'package:evee/firebase_functions.dart';
 import 'package:evee/landing_page.dart';
 import 'package:evee/voter_dashboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
 
@@ -21,13 +22,15 @@ class Poll_voting_page extends StatefulWidget
 class _Poll_voting_page_state extends State<Poll_voting_page>
 {
   Firebase_func firebase_func = Firebase_func();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  
 
   String selectedOption = 'Rank Choice';
   List<String> options = ['Multiple Choice', 'Essay', 'Rank Choice' /*, 'Single Choice'*/];
 
   int rank_selected = 0;
 
-  int multiple_choice_selected = 6;
+  int multiple_choice_selected = 0;
 
   bool option1 = false, option2 = false, option3 = false, option4 = false;
 
@@ -37,10 +40,137 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   TextEditingController essay_answer_controller = TextEditingController();
 
 
-  void save(BuildContext context)
+  void save(BuildContext context, String id)
   {
+    String poll_type = 'placeholder';
     
-    
+    User? user = auth.currentUser;
+    if(user != null)
+    {
+
+      String user_id = user.uid;
+
+
+      firebase_func.get_question_data(id).then((QuerySnapshot<Map<String, dynamic>>querySnapshot) 
+    async {
+
+      if(querySnapshot.docs.isNotEmpty)
+      {
+        DocumentSnapshot firstDocumentSnapshot = querySnapshot.docs.first;
+        Map<String, dynamic>? data = firstDocumentSnapshot.data() as Map<String, dynamic>?;
+
+        if(data != null)
+        {
+
+          String qst_id= firstDocumentSnapshot.id;
+          poll_type = data['type'];
+          String responders = data['responders'];
+          
+              if(responders == 'none')
+              {
+
+                responders = '$user_id/';
+
+              }
+              else
+              {
+
+                responders = '$responders$user_id/';
+
+              }
+
+          switch(poll_type)
+          {
+
+            case 'Multiple Choice':
+              int op1_respo = data['option 1 responses'];
+              int op2_respo = data['option 2 responses'];
+              
+
+              switch(multiple_choice_selected)
+              {
+                case 0:
+                  op1_respo++;
+                  break;
+                case 1:
+                  op2_respo++;
+                  break;  
+              }
+
+              await FirebaseFirestore.instance.collection('polls')
+                .doc(id).collection('questions').doc(qst_id).update(
+                  {
+                    'option 1 responses': op1_respo,
+                    'option 2 responses': op2_respo,
+                    'responders': responders,
+                  });
+
+              break;
+
+            case 'Essay':
+              String answer = essay_answer_controller.text;
+              int respondents = data['responses'];
+              String respons = respondents as String;
+              String answer_str = 'answer $respons';
+
+               await FirebaseFirestore.instance.collection('polls')
+                .doc(id).collection('questions').doc(qst_id).update(
+                  {
+                    
+                    'responders': responders,
+                    'responses': respondents++,
+                    answer_str: answer,
+                  });
+
+              break;
+
+            case 'Rank Choice':
+              int r1 = data['rank 1 responses'];
+              int r2 = data['rank 2 responses'];
+              int r3 = data['rank 3 responses'];
+              int r4 = data['rank 4 responses'];
+              
+              switch(rank_selected)
+              {
+                case 0:
+                  r1++;
+                  break;
+                case 1:
+                  r2++;
+                  break;
+                case 2:
+                  r3++;
+                  break;
+                case 3:
+                  r4++;
+                  break;    
+              }
+
+                await FirebaseFirestore.instance.collection('polls')
+                .doc(id).collection('questions').doc(qst_id).update(
+                  {
+                    
+                    'responders': responders,
+                    'rank 1 responses': r1,
+                    'rank 2 responses': r2,
+                    'rank 3 responses': r3,
+                    'rank 4 responses': r4,
+                  });
+
+              break;
+
+            default:
+              break;      
+
+          }
+
+        }
+
+      }
+
+    });
+
+    }
 
   }
 
@@ -90,6 +220,44 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   }
 
   
+  Future<List<List<String>>> fetchDocuments(String id) async 
+  {
+    CollectionReference collection =
+        FirebaseFirestore.instance.collection('polls').doc(id).collection('questions');
+
+    QuerySnapshot snapshot = await collection.get();
+
+    List<List<String>> list = [];
+    List<String> questions = [];
+
+    for (var doc in snapshot.docs)
+    {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      
+      String type = data['type'];
+      String question = data['question'];
+      String responders = data['responders'];
+
+      questions.add(type);
+      questions.add(question);
+      questions.add(responders);
+
+      if(type == 'Multiple Choice')
+      {
+        String op1 = data['option 1'];
+        String op2 = data['option 2'];
+
+        questions.add(op1);
+        questions.add(op2);
+      }
+
+      list.add(questions);
+    }
+
+    return list;
+  }
+
+
   @override
   Widget build(BuildContext context)
   {
@@ -150,32 +318,40 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                 (
                   height: screenHeight * 0.5,
 
-                  child: StreamBuilder<QuerySnapshot>
+                  child: FutureBuilder<List<List<String>>>
                   (
-                    stream: FirebaseFirestore.instance.collection('polls').doc(poll_id).collection('questions').snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) 
+                    future: fetchDocuments(poll_id),
+                    builder: (context, snapshot) 
                     {
-                      if (snapshot.hasError) 
-                      {
-                        return Text('Error: ${snapshot.error}');
-                      }
-
                       if (snapshot.connectionState == ConnectionState.waiting) 
                       {
                         return CircularProgressIndicator();
-                      }
-
-                      List<Container> containers = snapshot.data!.docs.map((QueryDocumentSnapshot document) 
+                      } else if (snapshot.hasData) 
                       {
-                        Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
+                        List<List<String>> polls = snapshot.data!;
 
-                        if (data != null) 
-                        {
-                          String type = data['type'];
-                          String question = data['question'];
-                          
+                        
 
-                          return Container
+                        return Container
+                        (
+                          height: screenHeight * 0.5,
+                          child: ListView.builder
+                          (
+                            itemCount: polls.length,
+                            itemBuilder: (BuildContext context, int index) 
+                            {
+                              String type = polls[index][0];
+                              String question = polls[index][1];
+                              String responders = polls[index][2];
+                              String op1 = 'pl', op2 = 'pl';
+
+                              if(type == 'Multiple Choice')
+                              {
+                                op1 = polls[index][3];
+                                op2 = polls[index][4];
+                              }
+
+                              return Container
                                 (
                                   width: screenWidth,
                                   margin: const EdgeInsets.fromLTRB(30, 0, 30, 30),
@@ -235,7 +411,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                                           style: ElevatedButton.styleFrom(
                                                             backgroundColor: multiple_choice_selected == 0 ? Colors.green : Colors.blue,
                                                           ),
-                                                          child: const Text('data'),
+                                                          child:  Text(op1),
 
                                                         ),
 
@@ -254,7 +430,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                                           style: ElevatedButton.styleFrom(
                                                             backgroundColor: multiple_choice_selected == 1 ? Colors.green : Colors.blue,
                                                           ),
-                                                          child: const Text('data'),
+                                                          child:  Text(op2),
 
                                                         ),
 
@@ -415,22 +591,17 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                 );
 
 
-                        }
-
-                        return Container(); // Return an empty container if data is null
-                      }).toList();
-
-                      return Container(
-                        constraints: BoxConstraints(maxHeight: screenHeight), // Provide a specific height constraint
-                        child: ListView.builder(
-                          itemCount: containers.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return containers[index];
-                          },
-                        ),
-                      );
+                            },
+                          ),
+                        );
+                      } 
+                      else 
+                      {
+                        return const Text('Failed to fetch polls.');
+                      }
                     },
                   ),
+
                 ),
 
 
@@ -445,11 +616,11 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                     onPressed: () 
                     {
 
-                      save(context);
+                      save(context, poll_id);
                       Navigator.push
                       (
                         context, 
-                        MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
+                        MaterialPageRoute(builder: (context) => Voter_dashboard_page())
                       );
 
                     },
