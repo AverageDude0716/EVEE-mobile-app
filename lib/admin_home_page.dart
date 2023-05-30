@@ -5,6 +5,8 @@ import 'package:evee/poll_create_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
+import 'package:clipboard/clipboard.dart';
+
 
 
 class Admnin_home_page extends StatefulWidget
@@ -19,11 +21,47 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
   Firebase_func firebase_func = Firebase_func();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+
+  Future<String> get_poll_id(String values) async
+  {
+
+    String id = 'pl';
+    CollectionReference usersCollection = FirebaseFirestore.instance.collection('polls');
+
+    QuerySnapshot querySnapshot = await usersCollection.where('poll name', isEqualTo: values).get();
+
+    
+    if (querySnapshot.docs.isNotEmpty) {
+      
+      DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+
+      Map<String, dynamic>? data = documentSnapshot.data() as Map<String, dynamic>?;
+
+      // Use the data as needed
+      if (data != null) 
+      {
+       
+        id = data['poll id'];
+
+        
+       
+      }
+    } else {
+      print('No documents found');
+    }
+    return id;
+
+  }
+
+
+  
+
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-     String uid = 'placeholder';
+    late String uid;
     final user = auth.currentUser;
     if(user != null)
     {
@@ -61,8 +99,25 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
           String polls = data['polls'];
 
           List<String> poll_list = polls.split('/').where((poll_list) => poll_list.isNotEmpty).toList();
+          List<String> poll_id = [];
 
-          return Scaffold
+        
+        return FutureBuilder<List<String>>(
+        future: Future.wait(poll_list.map((poll) => get_poll_id(poll)).toList()),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Show a loading indicator while data is being fetched
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            // Handle error case
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.hasData) {
+            // Data retrieval is successful
+            List<String> pollIdList = snapshot.data!;
+            poll_id.addAll(pollIdList);
+
+        
+            return Scaffold
           (
 
             body: Column
@@ -90,7 +145,6 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
                       Expanded
                       (
                         
-
                         child: Container
                         (
 
@@ -114,11 +168,40 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
 
                                   ),
 
-                                  child: Text
+                                  child: Column
                                   (
-                                    poll_list[position],
-                                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                  ),
+
+                                    children: 
+                                    [
+
+                                      Text
+                                      (
+                                        poll_list[position],
+                                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+
+                                      GestureDetector(
+                                      onTap: () {
+                                        String textToCopy = poll_id[position];
+                                        FlutterClipboard.copy(textToCopy).then((value) 
+                                        {
+                                          const SnackBar snackBar = SnackBar
+                                          (
+                                            content: Text('Poll ID copied to clipboard'),
+                                            behavior: SnackBarBehavior.floating,
+                                          );
+                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                        });
+                                      },
+                                      child: const Text(
+                                        'Tap to copy Poll ID',
+                                        style:  TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+
+                                    ],
+
+                                  )
 
                                 );
 
@@ -149,6 +232,7 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
 
                         ), 
 
+
                       ),
 
                     ],
@@ -173,6 +257,15 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
 
           );
 
+
+          } else {
+            // Data is null
+            return Text('No data found.');
+          }
+        },
+      );
+
+
         } else {
           // Data is null
           return Text('No data found.');
@@ -183,3 +276,4 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
     );
   }
 }
+

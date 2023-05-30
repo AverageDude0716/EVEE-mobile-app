@@ -27,6 +27,9 @@ TextEditingController last_name_controller = TextEditingController();
 
   Firebase_func firebase_func = Firebase_func();
 
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
+
   void _signup_button_press()
   {
     
@@ -397,7 +400,7 @@ TextEditingController last_name_controller = TextEditingController();
                             child: TextField
                                   (
                                     controller: password_controller,
-                                    obscureText: true,
+                                    obscureText: obscurePassword,
                                     decoration: InputDecoration
                                     (
                                       hintText: 'Enter Password',
@@ -415,8 +418,12 @@ TextEditingController last_name_controller = TextEditingController();
 
                                       suffixIcon: IconButton
                                       (
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.visibility)
+                                        onPressed: () {
+                                        setState(() {
+                                          obscurePassword = !obscurePassword;
+                                        });
+                                      },
+                                      icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility),
                                       )
                                     ),
                                     
@@ -434,7 +441,7 @@ TextEditingController last_name_controller = TextEditingController();
                             child: TextField
                                   (
                                     controller: confirm_password_controller,
-                                    obscureText: true,
+                                    obscureText: obscureConfirmPassword,
                                     decoration: InputDecoration
                                     (
                                       hintText: 'Confirm Password',
@@ -452,8 +459,12 @@ TextEditingController last_name_controller = TextEditingController();
 
                                       suffixIcon: IconButton
                                       (
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.visibility)
+                                        onPressed: () {
+                                        setState(() {
+                                          obscureConfirmPassword = !obscureConfirmPassword;
+                                        });
+                                      },
+                                      icon: Icon(obscureConfirmPassword ? Icons.visibility_off : Icons.visibility),
                                       )
                                     ),
                                     

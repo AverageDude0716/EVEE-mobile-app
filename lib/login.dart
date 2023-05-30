@@ -24,11 +24,13 @@ class _Login_page_state extends State<Login_page>
   TextEditingController password_controller = TextEditingController();
 
   Firebase_func firebase_func = Firebase_func();
+   bool obscurePassword = true;
 
   void _login_button_press()
   {
     String email = email_contoller.text;
     String password = password_controller.text;
+    
 
     if(email.isNotEmpty && password.isNotEmpty)
     {
@@ -186,7 +188,7 @@ class _Login_page_state extends State<Login_page>
                               child: TextField
                                     (
                                       controller: password_controller,
-                                      obscureText: true,
+                                      obscureText: obscurePassword,
                                       decoration: InputDecoration
                                       (
                                         hintText: 'Enter Password',
@@ -204,8 +206,12 @@ class _Login_page_state extends State<Login_page>
 
                                         suffixIcon: IconButton
                                         (
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.visibility)
+                                          onPressed: () {
+                                        setState(() {
+                                          obscurePassword = !obscurePassword;
+                                        });
+                                      },
+                                      icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility),
                                         )
                                       ),
                                       

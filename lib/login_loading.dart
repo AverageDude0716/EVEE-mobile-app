@@ -33,7 +33,7 @@ class _Login_loadinge_state extends State<Login_loading>
     }
 
     firebase_func.get_user_data(uid).then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) 
-    {
+    async {
 
       if (documentSnapshot.exists) 
       {
@@ -107,7 +107,7 @@ class _Login_loadinge_state extends State<Login_loading>
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold
+    return const Scaffold
     (
 
       body: Center

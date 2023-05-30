@@ -26,6 +26,8 @@ class _Create_voter_page_state extends State<Create_voter_page>
   TextEditingController confirm_password_controller = TextEditingController();
 
   Firebase_func firebase_func = Firebase_func();
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
 
   void _signup_button_press()
   {
@@ -397,7 +399,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
                             child: TextField
                                   (
                                     controller: password_controller,
-                                    obscureText: true,
+                                    obscureText: obscurePassword,
                                     decoration: InputDecoration
                                     (
                                       hintText: 'Enter Password',
@@ -415,8 +417,12 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                                       suffixIcon: IconButton
                                       (
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.visibility)
+                                        onPressed: () {
+                                        setState(() {
+                                          obscurePassword = !obscurePassword;
+                                        });
+                                      },
+                                      icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility),
                                       )
                                     ),
                                     
@@ -434,7 +440,7 @@ class _Create_voter_page_state extends State<Create_voter_page>
                             child: TextField
                                   (
                                     controller: confirm_password_controller,
-                                    obscureText: true,
+                                    obscureText: obscureConfirmPassword,
                                     decoration: InputDecoration
                                     (
                                       hintText: 'Confirm Password',
@@ -452,8 +458,12 @@ class _Create_voter_page_state extends State<Create_voter_page>
 
                                       suffixIcon: IconButton
                                       (
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.visibility)
+                                        onPressed: () {
+                                        setState(() {
+                                          obscureConfirmPassword = !obscureConfirmPassword;
+                                        });
+                                      },
+                                      icon: Icon(obscureConfirmPassword ? Icons.visibility_off : Icons.visibility),
                                       )
                                     ),
                                     
