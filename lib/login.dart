@@ -26,55 +26,37 @@ class _Login_page_state extends State<Login_page>
   Firebase_func firebase_func = Firebase_func();
    bool obscurePassword = true;
 
-  void _login_button_press()
-  {
-    String email = email_contoller.text;
-    String password = password_controller.text;
-    
+  void _login_button_press() async {
+  String email = email_contoller.text;
+  String password = password_controller.text;
 
-    if(email.isNotEmpty && password.isNotEmpty)
-    {
-
-      try
-    {
-      firebase_func.loginWithEmailAndPassword(email, password);
+  if (email.isNotEmpty && password.isNotEmpty) {
+    try {
+      await firebase_func.loginWithEmailAndPassword(email, password);
+      // Wait for login to complete before retrieving user data
+      await Future.delayed(Duration(seconds: 1));
+      //await firebase_func.load(context); // Retrieve user data after login
+    } catch (e) {
+      SnackBar snackBar = SnackBar(
+        content: Text('Login Up failed. $e'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } finally {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Login_loading()),
+      );
     }
-    catch(e)
-    {
-     
-     SnackBar snackBar = SnackBar
-              (
-                content: Text('Login Up failed. $e' ),
-                behavior: SnackBarBehavior.floating,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      
-    }
-    finally
-    {
-
-      Navigator.push
-                (
-                  context,
-                  MaterialPageRoute(builder: (context) => Login_loading())
-                );
-
-    }
-
-    }
-    else
-    {
-
-      const SnackBar snackBar = SnackBar
-              (
-                content: Text('Fill up all fields.' ),
-                behavior: SnackBarBehavior.floating,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-    }
-
+  } else {
+    const SnackBar snackBar = SnackBar(
+      content: Text('Fill up all fields.'),
+      behavior: SnackBarBehavior.floating,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+}
+
 
 
   @override

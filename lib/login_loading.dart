@@ -22,75 +22,59 @@ class _Login_loadinge_state extends State<Login_loading>
   Firebase_func firebase_func = Firebase_func();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  void load(BuildContext context )
-  {
-    User? user = auth.currentUser;
-    String uid = 'none';
+  void load(BuildContext context) async {
+  User? user = auth.currentUser;
+  String uid = 'none';
 
-    if(user != null)
-    {
-      uid = user.uid;
-    }
-
-    firebase_func.get_user_data(uid).then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) 
-    async {
-
-      if (documentSnapshot.exists) 
-      {
-        // Access the document's data
-        Map<String, dynamic> data = documentSnapshot.data()!;
-        
-        String account_type = data['account type'];
-
-        switch(account_type)
-        {
-
-          case 'voter':
-            Navigator.push
-            (
-              context,
-              MaterialPageRoute(builder: (context) => Voter_dashboard_page())
-            );
-            break;
-
-          case 'admin':
-            Navigator.push
-            (
-              context,
-              MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
-            );
-            break;
-
-        }
-
-      } else 
-      {
-       const SnackBar snackBar = SnackBar
-            (
-              content: Text('Error user does not exist'),
-              behavior: SnackBarBehavior.floating,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-            Navigator.push
-            (context, 
-            MaterialPageRoute(builder: (context) =>  Login_page())
-            );
-      }
-
-    }).catchError((error) 
-    {
-
-             SnackBar snackBar = SnackBar
-            (
-              content: Text('error. $error'),
-              behavior: SnackBarBehavior.floating,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-    });
-
+  if (user != null) {
+    uid = user.uid;
   }
+
+  try {
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await firebase_func.get_user_data(uid);
+    if (documentSnapshot.exists) {
+      // Access the document's data
+      Map<String, dynamic> data = documentSnapshot.data()!;
+
+      String account_type = data['account type'];
+
+      switch (account_type) {
+        case 'voter':
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Voter_dashboard_page()),
+          );
+          break;
+        case 'admin':
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Admnin_dashboard_page()),
+          );
+          break;
+      }
+    } else {
+      const SnackBar snackBar = SnackBar(
+        content: Text('Error user does not exist'),
+        behavior: SnackBarBehavior.floating,
+      );
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Login_page()));
+    }
+  } catch (error) {
+    SnackBar snackBar = SnackBar(
+      content: Text('Error: $error'),
+      behavior: SnackBarBehavior.floating,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+}
 
 
   @override

@@ -41,82 +41,78 @@ class _Voter_home_page_state extends State<Voter_home_page>
 
 
 
-  void fetchDocumentById(BuildContext context, String documentId) async 
-  {
+  Future<void> fetchDocumentById(BuildContext context, String documentId) async {
+  try {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('polls')
         .doc(documentId)
         .get();
 
-    if (snapshot.exists) 
-    {
-      // ignore: use_build_context_synchronously
-      FirebaseFirestore.instance
-    .collection('polls')
-    .doc('your_poll_document_id')
-    .collection('questions')
-    .limit(1)
-    .get()
-    .then((QuerySnapshot snapshot) 
-    {
-        if (snapshot.docs.isNotEmpty) {
-          DocumentSnapshot firstDocument = snapshot.docs.first;
+    if (snapshot.exists) {
+      QuerySnapshot subCollectionSnapshot =
+          await FirebaseFirestore.instance
+              .collection('polls')
+              .doc(documentId)
+              .collection('questions')
+              .limit(1)
+              .get();
 
-          User? user = auth.currentUser;
-          String uid = 'pl';
+      if (subCollectionSnapshot.docs.isNotEmpty) {
+        DocumentSnapshot firstDocument = subCollectionSnapshot.docs.first;
 
-          if(user != null)
-          {
+        User? user = auth.currentUser;
+        String uid = 'pl';
 
-            uid = user.uid;
+        if (user != null) {
+          uid = user.uid;
 
-            Map<String, dynamic>? data = firstDocument.data() as Map<String, dynamic>;
+          Map<String, dynamic>? data =
+              firstDocument.data() as Map<String, dynamic>;
 
-            String respondents = data['respondents'];
+          String respondents = data['responders'];
 
-            List<String> respondents_list = respondents.split('/').where((respondents_list) => respondents_list.isNotEmpty).toList();
+          List<String> respondentsList = respondents
+              .split('/')
+              .where((respondentsList) => respondentsList.isNotEmpty)
+              .toList();
 
-            if(respondents_list.contains(uid))
-            {
-              SnackBar snackBar = const SnackBar
-                          (
-                            content: Text('you already voted on this poll' ),
-                            behavior: SnackBarBehavior.floating,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
-            else
-            {
-               Navigator.push
-                (
-                  context, 
-                  MaterialPageRoute(builder: (context) =>  Poll_voting_page(id: documentId,))
-                );
-            }
-
+          if (respondentsList.contains(uid)) {
+            SnackBar snackBar = const SnackBar(
+              content: Text('You already voted on this poll.'),
+              behavior: SnackBarBehavior.floating,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } else {
+            // ignore: use_build_context_synchronously
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Poll_voting_page(id: documentId)),
+            );
           }
-          
-        } else {
-          // Subcollection is empty
-          // Handle the case when no documents are found in the subcollection
         }
-      }).catchError((error) {
-        // Handle any potential errors
-      });
-
-
-
-    } 
-    else 
-    {
-       SnackBar snackBar = const SnackBar
-                          (
-                            content: Text('Poll Not found' ),
-                            behavior: SnackBarBehavior.floating,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        SnackBar snackBar = const SnackBar(
+              content: Text('poll no'),
+              behavior: SnackBarBehavior.floating,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      SnackBar snackBar = const SnackBar(
+        content: Text('Poll not found.'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  } catch (e) {
+     SnackBar snackBar =  SnackBar(
+              content: Text('error $e'),
+              behavior: SnackBarBehavior.floating,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+}
+
 
 
   @override
@@ -171,12 +167,12 @@ class _Voter_home_page_state extends State<Voter_home_page>
                     ),
                     ElevatedButton
                     (
-                      onPressed: () 
+                      onPressed: () async
                       {
 
                         String poll_id_input = poll_id_input_controller.text;
 
-                        fetchDocumentById(context,poll_id_input);
+                        await fetchDocumentById(context,poll_id_input);
                         
 
                       },
