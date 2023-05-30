@@ -21,6 +21,7 @@ class Poll_voting_page extends StatefulWidget
 
 class _Poll_voting_page_state extends State<Poll_voting_page>
 {
+  TextEditingController essay_answer_controller = TextEditingController(); // Move inside the class
   Firebase_func firebase_func = Firebase_func();
   FirebaseAuth auth = FirebaseAuth.instance;
   
@@ -36,8 +37,14 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
   int question_num = 1;
 
+  late Future<List<List<String>>> _fetchDocuments;
 
-  TextEditingController essay_answer_controller = TextEditingController();
+
+   @override
+  void dispose() {
+    essay_answer_controller.dispose();
+    super.dispose();
+  }
 
 
   void save(BuildContext context, String id)
@@ -229,6 +236,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
     List<List<String>> list = [];
     List<String> questions = [];
+    
 
     for (var doc in snapshot.docs)
     {
@@ -255,6 +263,12 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
     }
 
     return list;
+  }
+
+
+  void initState() {
+    super.initState();
+    _fetchDocuments = fetchDocuments(widget.id);
   }
 
 
@@ -320,12 +334,12 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
                   child: FutureBuilder<List<List<String>>>
                   (
-                    future: fetchDocuments(poll_id),
+                    future: _fetchDocuments,
                     builder: (context, snapshot) 
                     {
                       if (snapshot.connectionState == ConnectionState.waiting) 
                       {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasData) 
                       {
                         List<List<String>> polls = snapshot.data!;

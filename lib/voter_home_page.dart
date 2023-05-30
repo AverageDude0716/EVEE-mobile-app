@@ -20,20 +20,25 @@ class _Voter_home_page_state extends State<Voter_home_page>
   TextEditingController poll_id_input_controller = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<List<String>> fetchDocuments() async 
+  Future<List<List<String>>> fetchDocuments() async 
   {
     CollectionReference collection =
         FirebaseFirestore.instance.collection('polls');
 
     QuerySnapshot snapshot = await collection.get();
 
-    List<String> polls = [];
+    List<List<String>> polls = [];
 
     for (var doc in snapshot.docs)
     {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      List<String> polls_sub = [];
       String poll_name = data['poll name'];
-      polls.add(poll_name);
+      String poll_id = data['poll id'];
+      polls_sub.add(poll_name);
+      polls_sub.add(poll_id);
+
+      polls.add(polls_sub);
     }
 
     return polls;
@@ -189,7 +194,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
               ),
-              FutureBuilder<List<String>>
+              FutureBuilder<List<List<String>>>
               (
                 future: fetchDocuments(),
                 builder: (context, snapshot) 
@@ -199,7 +204,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
                     return CircularProgressIndicator();
                   } else if (snapshot.hasData) 
                   {
-                    List<String> polls = snapshot.data!;
+                    List<List<String>> polls = snapshot.data!;
                     return Container
                     (
                       height: screenHeight * 0.5,
@@ -219,7 +224,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
                             ),
                             child: Text
                             (
-                              polls[index],
+                              polls[index][0],
                               style: const TextStyle
                               (
                                 fontSize: 24,
