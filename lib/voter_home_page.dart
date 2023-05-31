@@ -20,6 +20,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
   TextEditingController poll_id_input_controller = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
+
   Future<List<List<String>>> fetchDocuments() async 
   {
     CollectionReference collection =
@@ -222,14 +223,28 @@ class _Voter_home_page_state extends State<Voter_home_page>
                               color: light_yellow,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Text
+                            child: GestureDetector
                             (
-                              polls[index][0],
-                              style: const TextStyle
+
+                              child: Text
                               (
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                                polls[index][0],
+                                style: const TextStyle
+                                (
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
+
+                              onTap: () async
+                              {
+
+                                String poll_id = polls[index][1];
+
+                                await fetchDocumentById(context,poll_id);
+
+                              },
+
                             ),
                           );
                         },

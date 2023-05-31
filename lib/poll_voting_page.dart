@@ -38,6 +38,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   int question_num = 1;
 
   late Future<List<List<String>>> _fetchDocuments;
+  late Future<String> _get_poll_name;
 
 
    @override
@@ -117,7 +118,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
             case 'Essay':
               String answer = essay_answer_controller.text;
               int respondents = data['responses'];
-              String respons = respondents as String;
+              int respons = respondents + 1;
               String answer_str = 'answer $respons';
 
                await FirebaseFirestore.instance.collection('polls')
@@ -125,7 +126,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                   {
                     
                     'responders': responders,
-                    'responses': respondents++,
+                    'responses': respons,
                     answer_str: answer,
                   });
 
@@ -266,9 +267,40 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   }
 
 
+  Future<String> get_poll_name(String id) async
+  {
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference collection = firestore.collection('polls');
+
+    String poll_name = 'pl'; // Replace with the ID of the document you want to retrieve
+
+    await collection.doc(id).get().then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) 
+      {
+        Map<String, dynamic>? data = documentSnapshot.data() as Map<String, dynamic>?;
+
+        if (data != null) 
+        {
+          poll_name = data['poll name'];
+        }
+      } else {
+        
+      }
+    }).catchError((error) {
+      
+
+    });
+
+    return poll_name;
+
+  }
+
+
   void initState() {
     super.initState();
     _fetchDocuments = fetchDocuments(widget.id);
+    _get_poll_name = get_poll_name(widget.id);
   }
 
 
@@ -320,7 +352,32 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
                   ),
 
-                  child: Text('data')
+                  child: FutureBuilder<String>
+                  (
+                    
+                    future: _get_poll_name,
+                    builder: (context, snapshot) 
+                    {
+                      
+                      if (snapshot.connectionState == ConnectionState.waiting) 
+                      {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasData) 
+                      {
+
+                        String poll_name = snapshot.data!;
+
+                        return Text(poll_name);
+
+                      } 
+                      else 
+                      {
+                        return const Text('Failed to fetch polls.');
+                      }  
+
+                    },
+
+                  )
 
                 ),
 
@@ -408,7 +465,10 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
                                                     margin: const EdgeInsets.fromLTRB(0, 30, 0, 10),
 
-                                                    child: Text(question)
+                                                    child: SingleChildScrollView
+                                                    (
+                                                      child: Text(question),
+                                                    ),
 
                                                   ),
 
@@ -467,23 +527,42 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                                 children: 
                                                 [
 
-                                                  Text(question),
-
-                                                  TextField
+                                                  Container
                                                   (
-                                                    controller: essay_answer_controller,
 
-                                                    decoration: const InputDecoration
+                                                    margin: const EdgeInsets.fromLTRB(0, 30, 0, 10),
+
+                                                    child: SingleChildScrollView
                                                     (
+                                                      child: Text(question),
+                                                    ),
 
-                                                      hintText: 'User Input goes here',
-                                                      border: OutlineInputBorder
+                                                  ),
+
+                                                  SingleChildScrollView
+                                                  (
+
+                                                    scrollDirection: Axis.vertical,
+                                                    child: TextField
+                                                    (
+                                                      maxLines: null,
+                                                      keyboardType: TextInputType.multiline,
+
+                                                      controller: essay_answer_controller,
+
+                                                      decoration: const InputDecoration
                                                       (
-                                                        borderSide: BorderSide(color: light_gray),
-                                                      ),
-                                                      enabledBorder: OutlineInputBorder
-                                                      (
-                                                        borderSide: BorderSide(color: light_gray),
+
+                                                        hintText: 'User Input goes here',
+                                                        border: OutlineInputBorder
+                                                        (
+                                                          borderSide: BorderSide(color: light_gray),
+                                                        ),
+                                                        enabledBorder: OutlineInputBorder
+                                                        (
+                                                          borderSide: BorderSide(color: light_gray),
+                                                        ),
+
                                                       ),
 
                                                     ),
@@ -507,7 +586,17 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                                 children: 
                                                 [
 
-                                                  Text(question),
+                                                  Container
+                                                  (
+
+                                                    margin: const EdgeInsets.fromLTRB(0, 30, 0, 10),
+
+                                                    child: SingleChildScrollView
+                                                    (
+                                                      child: Text(question),
+                                                    ),
+
+                                                  ),
 
                                                   Row
                                                   (
