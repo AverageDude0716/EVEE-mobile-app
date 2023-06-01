@@ -37,7 +37,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
   int question_num = 1;
 
-  late Future<List<List<String>>> _fetchDocuments;
+  late Future<List<List<dynamic>>> _fetchDocuments;
   late Future<String> _get_poll_name;
 
 
@@ -228,7 +228,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   }
 
   
-  Future<List<List<String>>> fetchDocuments(String id) async 
+  Future<List<List<dynamic>>> fetchDocuments(String id) async 
   {
     CollectionReference collection =
         FirebaseFirestore.instance.collection('polls').doc(id).collection('questions');
@@ -389,7 +389,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                 (
                   height: screenHeight * 0.5,
 
-                  child: FutureBuilder<List<List<String>>>
+                  child: FutureBuilder<List<List<dynamic>>>
                   (
                     future: _fetchDocuments,
                     builder: (context, snapshot) 
@@ -399,7 +399,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasData) 
                       {
-                        List<List<String>> polls = snapshot.data!;
+                        List<List<dynamic>> polls = snapshot.data!;
 
                         
 
