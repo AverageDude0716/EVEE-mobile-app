@@ -53,39 +53,49 @@ class _Landing_page_state extends State<Landing_page>
 
                 Container
                 (
-                  margin: EdgeInsets.fromLTRB(0, 200, 0, 75.0),
-
-                    child: const Text
-                    (
-
-                      'Evee',
-                      style: TextStyle
-                      (
-                        fontSize: 48.0,
-                      ),
-                    ),
+                  margin: EdgeInsets.fromLTRB(0, 50, 0, 75.0),
+                  
+                  child: Image.asset
+                  (
+                    'assets/Evee_logo_2.png',
+                    
+                    width: 300, // Set the width of the image
+                    height: 300, // Set the height of the image
+                  ),
 
                 ),
 
-                ElevatedButton
+                
+
+                Container
                 (
+                  width: 130.0,
 
-                  onPressed: ()
-                  {
+                  child: ElevatedButton
+                  ( 
 
-                    Navigator.push
+                    onPressed: ()
+                    {
+
+                      Navigator.push
+                      (
+                        context,
+                        MaterialPageRoute(builder: (context) => Login_page())
+                      );
+
+                    },
+                    child: const Text
                     (
-                      context,
-                      MaterialPageRoute(builder: (context) => Login_page())
-                    );
+                      'Login',
+                      style: TextStyle
+                      (
+                        fontSize: 20,
+                      ),
+                    )
 
-                  },
-                  child: const Text
-                  (
-                    'Login'
-                  )
+                  ),
 
-                )
+                ),
 
               ],
 

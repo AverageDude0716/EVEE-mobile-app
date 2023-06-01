@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evee/firebase_functions.dart';
 import 'package:evee/landing_page.dart';
 import 'package:evee/poll_create_page.dart';
+import 'package:evee/poll_result_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'styles.dart';
@@ -102,168 +103,188 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
           List<String> poll_id = [];
 
         
-        return FutureBuilder<List<String>>(
-        future: Future.wait(poll_list.map((poll) => get_poll_id(poll)).toList()),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Show a loading indicator while data is being fetched
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            // Handle error case
-            return Text('Error: ${snapshot.error}');
-          } else if (snapshot.hasData) {
-            // Data retrieval is successful
-            List<String> pollIdList = snapshot.data!;
-            poll_id.addAll(pollIdList);
+            return FutureBuilder<List<String>>(
+            future: Future.wait(poll_list.map((poll) => get_poll_id(poll)).toList()),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Show a loading indicator while data is being fetched
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                // Handle error case
+                return Text('Error: ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                // Data retrieval is successful
+                List<String> pollIdList = snapshot.data!;
+                poll_id.addAll(pollIdList);
 
-        
-            return Scaffold
-          (
+            
+                return Scaffold
+              (
 
-            body: Column
-                  (
-
-                    children: 
-                    [
-
-                      Container
+                body: Column
                       (
 
-                        margin: const EdgeInsets.fromLTRB(30, 30, 30, 10),
-                        alignment: Alignment.center,
+                        children: 
+                        [
 
-                        child: const Text
-                        (
-                          'Polls',
-                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                        ),
+                          Container
+                          (
+
+                            margin: const EdgeInsets.fromLTRB(30, 30, 30, 10),
+                            alignment: Alignment.center,
+
+                            child: const Text
+                            (
+                              'Polls',
+                              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                            ),
+
+                          ),
+
+
+                          //listview
+                          Expanded
+                          (
+                            
+                            child: Container
+                            (
+
+                              child: polls != 'none'
+                                ? ListView.builder
+                                (
+
+                                  itemBuilder: (context, position)
+                                  {
+
+                                    return Container
+                                    (
+
+                                      margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                      padding: const EdgeInsets.all(20),
+                                      decoration: BoxDecoration
+                                      (
+
+                                        color: light_yellow,
+                                        borderRadius: BorderRadius.circular(10),
+
+                                      ),
+
+                                      child: Column
+                                      (
+
+                                        children: 
+                                        [
+
+                                          Text
+                                          (
+                                            poll_list[position],
+                                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                          ),
+
+                                          GestureDetector
+                                          (
+                                            onTap: () {
+                                            String textToCopy = poll_id[position];
+                                            FlutterClipboard.copy(textToCopy).then((value) 
+                                            {
+                                              const SnackBar snackBar = SnackBar
+                                              (
+                                                content: Text('Poll ID copied to clipboard'),
+                                                behavior: SnackBarBehavior.floating,
+                                              );
+                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                            });
+                                            },
+                                            child: const Text(
+                                              'Tap to copy Poll ID',
+                                              style:  TextStyle(fontSize: 15),
+                                            ),
+                                          ),
+
+
+                                          GestureDetector
+                                          (
+
+                                            onTap: () 
+                                            {
+                                              String id = poll_id[position];
+
+                                              Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => Poll_result_page(id: id)),
+                                              );
+
+                                            },
+
+                                            child: const Text('view poll results'),
+
+                                          ),
+
+                                        ],
+
+                                      )
+
+                                    );
+
+                                  },
+                                  itemCount: poll_list.length,
+
+                                )
+                                : Container
+                                    (
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                      padding: const EdgeInsets.all(20),
+                                      decoration: BoxDecoration
+                                      (
+
+                                        color: light_yellow,
+                                        borderRadius: BorderRadius.circular(10),
+
+                                      ),
+
+                                      child: const Text
+                                      (
+                                        'No polls created. Create One Now!',
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+
+                                    ),
+
+                            ), 
+
+
+                          ),
+
+                        ],
 
                       ),
 
-
-                      //listview
-                      Expanded
-                      (
-                        
-                        child: Container
-                        (
-
-                          child: polls != 'none'
-                            ? ListView.builder
+                      //add buttons
+                      floatingActionButton: FloatingActionButton
                             (
-
-                              itemBuilder: (context, position)
+                              onPressed: () 
                               {
 
-                                return Container
+                                Navigator.push
                                 (
-
-                                  margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration
-                                  (
-
-                                    color: light_yellow,
-                                    borderRadius: BorderRadius.circular(10),
-
-                                  ),
-
-                                  child: Column
-                                  (
-
-                                    children: 
-                                    [
-
-                                      Text
-                                      (
-                                        poll_list[position],
-                                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                      ),
-
-                                      GestureDetector(
-                                      onTap: () {
-                                        String textToCopy = poll_id[position];
-                                        FlutterClipboard.copy(textToCopy).then((value) 
-                                        {
-                                          const SnackBar snackBar = SnackBar
-                                          (
-                                            content: Text('Poll ID copied to clipboard'),
-                                            behavior: SnackBarBehavior.floating,
-                                          );
-                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                        });
-                                      },
-                                      child: const Text(
-                                        'Tap to copy Poll ID',
-                                        style:  TextStyle(fontSize: 15),
-                                      ),
-                                    ),
-
-                                    ],
-
-                                  )
-
+                                  context, 
+                                  MaterialPageRoute(builder: (context) => Poll_create_page())
                                 );
 
                               },
-                              itemCount: poll_list.length,
+                              child: const Icon(Icons.add_circle)
+                            ),
 
-                            )
-                            : Container
-                                (
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration
-                                  (
-
-                                    color: light_yellow,
-                                    borderRadius: BorderRadius.circular(10),
-
-                                  ),
-
-                                  child: const Text
-                                  (
-                                    'No polls created. Create One Now!',
-                                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                  ),
-
-                                ),
-
-                        ), 
+              );
 
 
-                      ),
-
-                    ],
-
-                  ),
-
-                  //add buttons
-                  floatingActionButton: FloatingActionButton
-                        (
-                          onPressed: () 
-                          {
-
-                            Navigator.push
-                            (
-                              context, 
-                              MaterialPageRoute(builder: (context) => Poll_create_page())
-                            );
-
-                          },
-                          child: const Icon(Icons.add_circle)
-                        ),
-
+              } else {
+                // Data is null
+                return Text('No data found.');
+              }
+            },
           );
-
-
-          } else {
-            // Data is null
-            return Text('No data found.');
-          }
-        },
-      );
 
 
         } else {

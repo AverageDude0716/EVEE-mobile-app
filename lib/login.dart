@@ -129,6 +129,7 @@ class _Login_page_state extends State<Login_page>
                               (
                                 color: Colors.black,
                                 fontSize: 48.0,
+                                fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.none
                               ),
                             ),//header
@@ -203,19 +204,26 @@ class _Login_page_state extends State<Login_page>
                             ),
 
                             // login button
-                            ElevatedButton
+                            Container
                             (
-                              onPressed: () 
-                              {
 
-                              _login_button_press();
 
-                              },
-                              child: const Text('Login')
+                              child: ElevatedButton
+                              (
+                                onPressed: () 
+                                {
+
+                                _login_button_press();
+
+                                },
+                                child: const Text('Login'),
+                                
+                              ),
+
                             ),
 
                             //to sign up
-                            ElevatedButton
+                            OutlinedButton
                             (
                               onPressed: () 
                               {
@@ -227,7 +235,14 @@ class _Login_page_state extends State<Login_page>
                                 );
 
                               },
-                              child: const Text('Dont have an account? Sign in')
+                              child: const Text
+                              (
+                                'Dont have an account? Sign Up',
+                                style: TextStyle
+                                (
+                                  color: Colors.black,
+                                ),
+                              ),
                             )
         
                           ],

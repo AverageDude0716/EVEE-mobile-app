@@ -34,7 +34,7 @@ class _Poll_result_page_state extends State<Poll_result_page>
     List<String> info = [];
 
     await docref.get().then((DocumentSnapshot documentSnapshot) 
-    {
+    async {
 
       if(documentSnapshot.exists)
       {
@@ -46,11 +46,27 @@ class _Poll_result_page_state extends State<Poll_result_page>
 
           String name = data['poll name'];
           String id = data['poll id'];
-          String owner =  data['poll owner'];
+          String owner = data["poll owner"];
+          String poll_owner = 'pl';
+
+          await FirebaseFirestore.instance.collection('users').doc(owner).get()
+          .then((DocumentSnapshot snapshot) 
+          {
+            Map<String, dynamic>? data2 = snapshot.data() as Map<String, dynamic>?;
+            if(data2 != null)
+            {
+              String ln = data2['last name'];
+              String fn = data2['first name'];
+              poll_owner = '$fn $ln';
+            }
+          }).catchError((error) 
+          {
+
+          });
 
           info.add(name);
           info.add(id);
-          info.add(owner);
+          info.add(poll_owner);
 
         }
 
@@ -150,6 +166,7 @@ class _Poll_result_page_state extends State<Poll_result_page>
     super.initState();
 
     poll_info = get_poll(widget.id);
+    question_info = get_question(widget.id);
 
   }
 
@@ -167,13 +184,184 @@ class _Poll_result_page_state extends State<Poll_result_page>
       body: SingleChildScrollView
       (
 
-        child: Container
+        child: Column
         (
 
-          color: light_yellow,
-          width: screenWidth,
+          mainAxisSize: MainAxisSize.min,
 
-          child: Text('result Page', style:  TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+          children: 
+          [
+
+            //header
+            Container
+            (
+
+              margin: const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(20),
+              width: screenWidth,
+              alignment: Alignment.center,
+              decoration: BoxDecoration
+              (
+
+                color: light_yellow,
+                borderRadius: BorderRadius.circular(20)
+
+              ),
+              
+
+              child: FutureBuilder<List<String>>
+              (
+
+                future: poll_info,
+                builder: (context, snapshot) 
+                {
+
+                  if (snapshot.connectionState == ConnectionState.waiting) 
+                  {
+                    // Show a loading indicator while data is being fetched
+                    return const CircularProgressIndicator();
+                  } 
+                  else if (snapshot.hasError) 
+                  {
+                    // Handle error case
+                    return Text('Error: ${snapshot.error}');
+
+                  } 
+                  else if (snapshot.hasData) 
+                  {
+                    // Data retrieval is successful
+                    List<String> data = snapshot.data!;
+
+                    String name = data[0];
+                    String id = data[1];
+                    String owner = data[2];
+
+                    return Column
+                    (
+
+                      children: 
+                      [
+
+                        Text('Poll Name: $name'),
+
+                        Text('Poll Owner: $owner'),
+
+                        const Text('Poll ID'),
+
+                        Text(id),
+
+                      ],
+
+                    );
+                    
+
+                  } else {
+                    // Data is null
+                    return Text('No data found.');
+                  }
+
+                },
+              ),
+
+            ),
+
+            //general data
+            Container
+            (
+
+              margin: const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(20),
+              width: screenWidth,
+              alignment: Alignment.center,
+              decoration: BoxDecoration
+              (
+
+                color: light_yellow,
+                borderRadius: BorderRadius.circular(20)
+
+              ),
+
+              child: FutureBuilder<List<List<dynamic>>>
+              (
+
+                future: question_info,
+                builder: (context, snapshot) 
+                {
+
+                  if (snapshot.connectionState == ConnectionState.waiting) 
+                  {
+                    // Show a loading indicator while data is being fetched
+                    return const CircularProgressIndicator();
+                  } 
+                  else if (snapshot.hasError) 
+                  {
+                    // Handle error case
+                    return Text('Error: ${snapshot.error}');
+
+                  } 
+                  else if (snapshot.hasData) 
+                  {
+                    // Data retrieval is successful
+                    List<List<dynamic>> data = snapshot.data!;
+                    int total = 0;
+                    
+                    for(List<dynamic> list in data)
+                    {
+
+                      String type = list[0];
+                      int subtotal = 0;
+
+                      switch(type)
+                      {
+
+                        case 'Multiple Choice':
+                          int op1 = list[4];
+                          int op2 = list[6];
+
+                          subtotal = op1 + op2;
+                          total += subtotal;
+                          break;
+
+                         case 'Essay':
+                          int respo = list[3];
+
+                          total += respo;
+                          break; 
+
+                        case 'Rank Choice':
+                          int r1 = list[3];
+                          int r2 = list[4];
+                          int r3 = list[5];
+                          int r4 = list[6];
+
+                          subtotal = r1 + r2 + r3+ r4;
+                          total += subtotal;
+                          break;  
+
+                      }
+
+                    }
+                    
+
+                    return Container
+                    (
+
+                      child: Text('$total'),
+
+                    );
+                    
+
+                  } else {
+                    // Data is null
+                    return Text('No data found.');
+                  }
+
+                },
+              ),
+
+            ),
+
+          ],
 
         ),
 

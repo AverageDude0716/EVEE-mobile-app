@@ -31,3 +31,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/background_img/background_1.jpg
+    - assets/Evee_logo_2.png
+
