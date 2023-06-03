@@ -82,10 +82,21 @@ class _Login_page_state extends State<Login_page>
                   decoration: const BoxDecoration
                   (
 
-                    image: DecorationImage
+                    /*image: DecorationImage
                     (
                       image: AssetImage('assets/background_img/background_3.jpg'),
                       fit: BoxFit.cover,
+                    )*/
+                    gradient: LinearGradient
+                    (
+                      colors: 
+                      [
+                        blue2,
+                        purple2,
+                        yellow2,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     )
 
                   ),
@@ -216,6 +227,10 @@ class _Login_page_state extends State<Login_page>
                                 _login_button_press();
 
                                 },
+                                style: const ButtonStyle
+                                (
+                                  backgroundColor: MaterialStatePropertyAll(purple2),
+                                ),
                                 child: const Text('Login'),
                                 
                               ),
@@ -262,7 +277,7 @@ class _Login_page_state extends State<Login_page>
       
       onWillPop: () async
       {
-        return true;
+        return false;
       }
     );
 

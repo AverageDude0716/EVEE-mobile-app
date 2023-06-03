@@ -38,10 +38,22 @@ class _Landing_page_state extends State<Landing_page>
             decoration: const BoxDecoration
             (
 
-              image: DecorationImage
+              /*image: DecorationImage
               (
                 image: AssetImage('assets/background_img/background_3.jpg'),
                 fit: BoxFit.cover,
+              )*/
+
+              gradient: LinearGradient
+              (
+                colors: 
+                [
+                  blue2,
+                  purple2,
+                  yellow2,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               )
 
             ),
@@ -51,36 +63,38 @@ class _Landing_page_state extends State<Landing_page>
 
               children:  [
 
-
-                Container
-                (
-                  margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                  
-                  child: Image.asset
-                  (
-                    'assets/Evee_logo_2.png',
-                    
-                    width: 300, // Set the width of the image
-                    height: 300, // Set the height of the image
-                  ),
-
-                ),
-
                 Container
                 (
 
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 200),
+                  margin: const EdgeInsets.fromLTRB(0, 70, 0, 10),
 
                   child: const Text
                   (
                     'Welcome to Evee',
                     style: TextStyle
                     (
+                      fontWeight: FontWeight.bold,
                       fontSize: 40,
                     ),
                   ),
 
                 ),
+
+
+                Container
+                (
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 90),
+                  
+                  child: Image.asset
+                  (
+                    'assets/round_icons.png',
+                    
+                    width: 400, // Set the width of the image
+                    height: 400, // Set the height of the image
+                  ),
+
+                ),
+
 
                 Container
                 (
@@ -99,6 +113,10 @@ class _Landing_page_state extends State<Landing_page>
                       );
 
                     },
+                    style: const ButtonStyle
+                      (
+                        backgroundColor: MaterialStatePropertyAll(purple2),
+                      ),
                     child: const Text
                     (
                       'Login',
@@ -133,3 +151,4 @@ class _Landing_page_state extends State<Landing_page>
 
 
 }
+

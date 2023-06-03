@@ -62,26 +62,26 @@ class _Voter_dashboard_page_state extends State<Voter_dashboard_page>
           BottomNavigationBarItem(  
             icon: Icon(Icons.home),  
             label: 'Home',  
-            backgroundColor: light_violet 
+            backgroundColor: purple2 
           ), 
 
           BottomNavigationBarItem(  
             icon: Icon(Icons.person),  
             label: 'Profile',  
-            backgroundColor: light_violet  
+            backgroundColor: purple2
           ), 
 
           BottomNavigationBarItem(  
             icon: Icon(Icons.settings),  
             label: 'Settings',  
-            backgroundColor: light_violet
+            backgroundColor: purple2
           ),  
 
         ], 
 
         type: BottomNavigationBarType.shifting,  
         currentIndex: _selectedIndex,  
-        selectedItemColor: Colors.black,  
+        selectedItemColor: yellow,  
         iconSize: 40,  
         onTap: _onItemTapped,  
         elevation: 5  ,

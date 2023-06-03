@@ -152,7 +152,14 @@ TextEditingController last_name_controller = TextEditingController();
     return Scaffold
     (
 
-      body: SingleChildScrollView
+      body: WillPopScope
+      (
+        onWillPop: ()async
+        {
+          return false;
+        },
+
+        child: SingleChildScrollView
       (
 
         child: Container
@@ -164,11 +171,22 @@ TextEditingController last_name_controller = TextEditingController();
                 decoration: const BoxDecoration
                 (
 
-                  image: DecorationImage
-                  (
-                    image: AssetImage('assets/background_img/background_1.jpg'),
-                    fit: BoxFit.cover,
-                  )
+                  /*image: DecorationImage
+                    (
+                      image: AssetImage('assets/background_img/background_3.jpg'),
+                      fit: BoxFit.cover,
+                    )*/
+                    gradient: LinearGradient
+                    (
+                      colors: 
+                      [
+                        blue2,
+                        purple2,
+                        yellow2,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )
 
                 ),
 
@@ -482,11 +500,15 @@ TextEditingController last_name_controller = TextEditingController();
                               _signup_button_press();
 
                             },
+                            style: const ButtonStyle
+                            (
+                              backgroundColor: MaterialStatePropertyAll(purple2),
+                            ),
                             child: const Text('Create Account')
                           ),
 
                           //to login
-                          ElevatedButton
+                          OutlinedButton
                           (
                             onPressed: () 
                             {
@@ -498,7 +520,7 @@ TextEditingController last_name_controller = TextEditingController();
                               );
 
                             },
-                            child: const Text('Already have an account? Login')
+                              child: const Text('Already have an account? Login', style: TextStyle(color: Colors.black),)
                           )
       
                         ],
@@ -512,6 +534,9 @@ TextEditingController last_name_controller = TextEditingController();
               ),
 
       ),
+
+
+      )
 
     );
 

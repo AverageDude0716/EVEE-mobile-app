@@ -148,7 +148,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration
                 (
-                  color: light_yellow,
+                  color: yellow2,
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Column
@@ -180,8 +180,11 @@ class _Voter_home_page_state extends State<Voter_home_page>
 
                         await fetchDocumentById(context,poll_id_input);
                         
-
                       },
+                      style: const ButtonStyle
+                      (
+                        backgroundColor: MaterialStatePropertyAll(purple2),
+                      ),
                       child: const Text('Vote'),
                     ),
                   ],
@@ -220,7 +223,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration
                             (
-                              color: light_yellow,
+                              color: yellow2,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: GestureDetector
