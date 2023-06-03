@@ -765,5 +765,3 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   }
 
 }
-
-

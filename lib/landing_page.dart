@@ -40,7 +40,7 @@ class _Landing_page_state extends State<Landing_page>
 
               image: DecorationImage
               (
-                image: AssetImage('assets/background_img/background_1.jpg'),
+                image: AssetImage('assets/background_img/background_3.jpg'),
                 fit: BoxFit.cover,
               )
 
@@ -51,9 +51,10 @@ class _Landing_page_state extends State<Landing_page>
 
               children:  [
 
+
                 Container
                 (
-                  margin: EdgeInsets.fromLTRB(0, 50, 0, 75.0),
+                  margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                   
                   child: Image.asset
                   (
@@ -65,7 +66,21 @@ class _Landing_page_state extends State<Landing_page>
 
                 ),
 
-                
+                Container
+                (
+
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 200),
+
+                  child: const Text
+                  (
+                    'Welcome to Evee',
+                    style: TextStyle
+                    (
+                      fontSize: 40,
+                    ),
+                  ),
+
+                ),
 
                 Container
                 (

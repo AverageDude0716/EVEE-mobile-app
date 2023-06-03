@@ -84,7 +84,7 @@ class _Login_page_state extends State<Login_page>
 
                     image: DecorationImage
                     (
-                      image: AssetImage('assets/background_img/background_1.jpg'),
+                      image: AssetImage('assets/background_img/background_3.jpg'),
                       fit: BoxFit.cover,
                     )
 
@@ -262,7 +262,7 @@ class _Login_page_state extends State<Login_page>
       
       onWillPop: () async
       {
-        return false;
+        return true;
       }
     );
 
