@@ -82,12 +82,12 @@ class _Login_page_state extends State<Login_page>
                   decoration: const BoxDecoration
                   (
 
-                    /*image: DecorationImage
+                    image: DecorationImage
                     (
-                      image: AssetImage('assets/background_img/background_3.jpg'),
+                      image: AssetImage('assets/background.jpg'),
                       fit: BoxFit.cover,
-                    )*/
-                    gradient: LinearGradient
+                    )
+                    /*gradient: LinearGradient
                     (
                       colors: 
                       [
@@ -97,7 +97,7 @@ class _Login_page_state extends State<Login_page>
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                    )
+                    )*/
 
                   ),
 

@@ -195,7 +195,12 @@ class _Voter_home_page_state extends State<Voter_home_page>
                 child: const Text
                 (
                   'Polls',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  style: TextStyle
+                  (
+                    fontSize: 40, 
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
                 ),
               ),
               FutureBuilder<List<List<String>>>

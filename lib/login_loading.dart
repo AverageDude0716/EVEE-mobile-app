@@ -97,7 +97,7 @@ class _Login_loadinge_state extends State<Login_loading>
       body: Center
       (
        
-        child: Text('Loading. Pleas wait.', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+        child: Text('Loading. Please wait.', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
 
       ),
 

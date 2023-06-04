@@ -57,4 +57,11 @@ flutter:
     - assets/icons/icon_5.png
     - assets/icons/icon_6.png
     - assets/round_icons.png
+    - assets/round_icons2.png
+    - assets/background.jpg
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts/poppins/Poppins-Regular.ttf
+        - asset: fonts/poppins/Poppins-Bold.ttf
 

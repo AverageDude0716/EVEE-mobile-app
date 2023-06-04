@@ -38,13 +38,13 @@ class _Landing_page_state extends State<Landing_page>
             decoration: const BoxDecoration
             (
 
-              /*image: DecorationImage
+              image: DecorationImage
               (
-                image: AssetImage('assets/background_img/background_3.jpg'),
+                image: AssetImage('assets/background.jpg'),
                 fit: BoxFit.cover,
-              )*/
+              )
 
-              gradient: LinearGradient
+              /*gradient: LinearGradient
               (
                 colors: 
                 [
@@ -54,7 +54,7 @@ class _Landing_page_state extends State<Landing_page>
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-              )
+              )*/
 
             ),
 
@@ -73,6 +73,8 @@ class _Landing_page_state extends State<Landing_page>
                     'Welcome to Evee',
                     style: TextStyle
                     (
+                      fontFamily: 'Poppins',
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 40,
                     ),
@@ -85,9 +87,9 @@ class _Landing_page_state extends State<Landing_page>
                 (
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 90),
                   
-                  child: Image.asset
+                  child:Image.asset
                   (
-                    'assets/round_icons.png',
+                    'assets/round_icons2.png',
                     
                     width: 400, // Set the width of the image
                     height: 400, // Set the height of the image

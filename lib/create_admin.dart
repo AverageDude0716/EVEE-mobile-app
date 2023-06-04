@@ -171,12 +171,12 @@ TextEditingController last_name_controller = TextEditingController();
                 decoration: const BoxDecoration
                 (
 
-                  /*image: DecorationImage
+                    image: DecorationImage
                     (
-                      image: AssetImage('assets/background_img/background_3.jpg'),
+                      image: AssetImage('assets/background.jpg'),
                       fit: BoxFit.cover,
-                    )*/
-                    gradient: LinearGradient
+                    )
+                    /*gradient: LinearGradient
                     (
                       colors: 
                       [
@@ -186,7 +186,7 @@ TextEditingController last_name_controller = TextEditingController();
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                    )
+                    )*/
 
                 ),
 

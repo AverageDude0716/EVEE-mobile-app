@@ -46,11 +46,19 @@ class _Voter_dashboard_page_state extends State<Voter_dashboard_page>
     return Scaffold
     (
 
-      body: Center
+      body: WillPopScope
       (
-       
-        child: _widgetOptions.elementAt(_selectedIndex)
+        onWillPop: ()async
+        {
+          return false;
+        },
 
+        child: Center
+        (
+        
+          child: _widgetOptions.elementAt(_selectedIndex)
+
+        ), 
       ),
 
 

@@ -42,22 +42,22 @@ class _Create_account_page_state extends State<Create_account_page>
             decoration: const BoxDecoration
                   (
 
-                    /*image: DecorationImage
-                      (
-                        image: AssetImage('assets/background_img/background_3.jpg'),
-                        fit: BoxFit.cover,
-                      )*/
-                      gradient: LinearGradient
-                      (
-                        colors: 
-                        [
-                          blue2,
-                          purple2,
-                          yellow2,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      )
+                    image: DecorationImage
+                    (
+                      image: AssetImage('assets/background.jpg'),
+                      fit: BoxFit.cover,
+                    )
+                    /*gradient: LinearGradient
+                    (
+                      colors: 
+                      [
+                        blue2,
+                        purple2,
+                        yellow2,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )*/
 
                   ),
 
