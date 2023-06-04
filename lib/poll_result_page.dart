@@ -439,7 +439,8 @@ class _Poll_result_page_state extends State<Poll_result_page>
 }
 */
 
-class Poll_result_page extends StatefulWidget {
+class Poll_result_page extends StatefulWidget 
+{
   final String id;
 
   Poll_result_page({required this.id});
@@ -448,14 +449,16 @@ class Poll_result_page extends StatefulWidget {
   State<Poll_result_page> createState() => _Poll_result_page_state();
 }
 
-class BarChartData {
+class BarChartData 
+{
   final String category;
   final int value;
 
   BarChartData(this.category, this.value);
 }
 
-class _Poll_result_page_state extends State<Poll_result_page> {
+class _Poll_result_page_state extends State<Poll_result_page>
+ {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   late Future<List<String>> poll_info;
@@ -551,7 +554,8 @@ class _Poll_result_page_state extends State<Poll_result_page> {
 
       users += respondentsList;
 
-      switch (type) {
+      switch (type) 
+      {
         case 'Multiple Choice':
           String op1 = data['option 1'];
           dynamic op1_res = data['option 1 responses'];
@@ -566,12 +570,16 @@ class _Poll_result_page_state extends State<Poll_result_page> {
           break;
 
         case 'Essay':
-          dynamic responses = data['responses'];
-          String answer = 'answer $responses';
+          int responses = data['responses'];
+          
+          int num = 0;
 
           info.add(responses);
 
-          for (int x = 0; x < responses; x++) {
+          for (int x = 0; x < responses; x++) 
+          {
+            num++;
+            String answer = 'answer $num';
             String ans = data[answer];
             info.add(ans);
           }
@@ -589,6 +597,9 @@ class _Poll_result_page_state extends State<Poll_result_page> {
           info.add(rank4);
           break;
       }
+      String question_id = doc.id;
+
+      info.add(question_id);
 
       List<String> new_list = users.toSet().toList();
       users = new_list;
@@ -725,25 +736,33 @@ class _Poll_result_page_state extends State<Poll_result_page> {
             ),
 
             //question results
-            Container(
+            Container
+            (
               child: FutureBuilder<List<List<dynamic>>>(
                 future: question_info,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting) 
+                  {
                     // Show a loading indicator while data is being fetched
                     return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
+                  } 
+                  else if (snapshot.hasError) 
+                  {
                     // Handle error case
                     return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.hasData) {
+                  } 
+                  else if (snapshot.hasData) 
+                  {
                     // Data retrieval is successful
                     List<List<dynamic>> data = snapshot.data!;
 
-                    return ListView.builder(
+                    return ListView.builder
+                    (
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: data.length,
-                      itemBuilder: (context, index) {
+                      itemBuilder: (context, index)
+                      {
                         List<dynamic> question = data[index];
                         String type = question[0];
                         String questionText = question[1];
@@ -753,16 +772,22 @@ class _Poll_result_page_state extends State<Poll_result_page> {
                             .where((respondentsList) => respondentsList.isNotEmpty)
                             .toList();
 
-                        return Container(
+                        List<dynamic> answers = question.sublist(4, question.length-1);
+                        
+                        return Container
+                        (
                           margin: const EdgeInsets.all(10),
                           padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
+                          decoration: BoxDecoration
+                          (
                             color: light_yellow,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Column(
+                          child: Column
+                          (
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: 
+                            [
                               Text('Question: $questionText'),
                               Text('Type: $type'),
                               Text('Total Responders: ${respondentsList.length}'),
@@ -771,13 +796,15 @@ class _Poll_result_page_state extends State<Poll_result_page> {
                               if (type == 'Rank Choice')
                                 _buildRankChoiceChart(question),
                               if (type == 'Essay')
-                                _buildEssayResponses(respondentsList),
+                               
+                                _buildEssayResponses(answers),
                             ],
                           ),
                         );
                       },
                     );
-                  } else {
+                  } else 
+                  {
                     // Data is null
                     return Text('No data found.');
                   }
@@ -790,19 +817,23 @@ class _Poll_result_page_state extends State<Poll_result_page> {
     );
   }
 
-  Widget _buildMultipleChoiceChart(List<dynamic> question) {
+  Widget _buildMultipleChoiceChart(List<dynamic> question) 
+  {
     String option1 = question[3];
     int option1Responses = question[4];
     String option2 = question[5];
     int option2Responses = question[6];
 
-    List<BarChartData> data = [
+    List<BarChartData> data = 
+    [
       BarChartData(option1, option1Responses),
       BarChartData(option2, option2Responses),
     ];
 
-    List<charts.Series<BarChartData, String>> series = [
-      charts.Series(
+    List<charts.Series<BarChartData, String>> series = 
+    [
+      charts.Series
+      (
         id: 'Multiple Choice',
         data: data,
         domainFn: (BarChartData data, _) => data.category,
@@ -810,9 +841,11 @@ class _Poll_result_page_state extends State<Poll_result_page> {
       ),
     ];
 
-    return Container(
+    return Container
+    (
       height: 200,
-      child: charts.BarChart(
+      child: charts.BarChart
+      (
         series,
         animate: true,
         vertical: false,
@@ -820,21 +853,25 @@ class _Poll_result_page_state extends State<Poll_result_page> {
     );
   }
 
-  Widget _buildRankChoiceChart(List<dynamic> question) {
+  Widget _buildRankChoiceChart(List<dynamic> question) 
+  {
     int rank1Responses = question[3];
     int rank2Responses = question[4];
     int rank3Responses = question[5];
     int rank4Responses = question[6];
 
-    List<BarChartData> data = [
+    List<BarChartData> data = 
+    [
       BarChartData('Rank 1', rank1Responses),
       BarChartData('Rank 2', rank2Responses),
       BarChartData('Rank 3', rank3Responses),
       BarChartData('Rank 4', rank4Responses),
     ];
 
-    List<charts.Series<BarChartData, String>> series = [
-      charts.Series(
+    List<charts.Series<BarChartData, String>> series = 
+    [
+      charts.Series
+      (
         id: 'Rank Choice',
         data: data,
         domainFn: (BarChartData data, _) => data.category,
@@ -842,9 +879,11 @@ class _Poll_result_page_state extends State<Poll_result_page> {
       ),
     ];
 
-    return Container(
+    return Container
+    (
       height: 200,
-      child: charts.BarChart(
+      child: charts.BarChart
+      (
         series,
         animate: true,
         vertical: false,
@@ -852,10 +891,26 @@ class _Poll_result_page_state extends State<Poll_result_page> {
     );
   }
 
-  Widget _buildEssayResponses(List<String> respondentsList) {
+  /*Widget _buildEssayResponses(List<String> respondentsList) 
+  {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: respondentsList.map((response) => Text(response)).toList(),
+    );
+  }*/
+
+  Widget _buildEssayResponses(List<dynamic> respondentsList) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: respondentsList.map((response) => Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.lightBlue,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(response, style: TextStyle(color: Colors.white)),
+      )).toList(),
     );
   }
 }

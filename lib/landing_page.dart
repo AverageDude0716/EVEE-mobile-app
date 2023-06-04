@@ -89,7 +89,7 @@ class _Landing_page_state extends State<Landing_page>
                   
                   child:Image.asset
                   (
-                    'assets/round_icons2.png',
+                    'assets/Evee_logo_2.png',
                     
                     width: 400, // Set the width of the image
                     height: 400, // Set the height of the image

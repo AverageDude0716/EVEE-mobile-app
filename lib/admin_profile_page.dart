@@ -37,13 +37,18 @@ class _Admin_profile_page_state extends State<Admin_profile_page>
       body: SingleChildScrollView
       (
 
-        child: Container
+        child: Column
         (
 
-          color: light_yellow,
-          width: screenWidth,
+          children: 
+          [
 
-          child: Text('Profilo Page', style:  TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+            Container
+            (
+              child: const Text('test'),
+            )
+
+          ],
 
         ),
 

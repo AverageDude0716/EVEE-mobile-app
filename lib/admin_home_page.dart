@@ -164,7 +164,7 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
                                       decoration: BoxDecoration
                                       (
 
-                                        color: light_yellow,
+                                        color: yellow2,
                                         borderRadius: BorderRadius.circular(10),
 
                                       ),
@@ -273,6 +273,7 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
                                 );
 
                               },
+                              backgroundColor: blue2,
                               child: const Icon(Icons.add_circle)
                             ),
 
