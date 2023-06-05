@@ -85,14 +85,14 @@ class _Landing_page_state extends State<Landing_page>
 
                 Container
                 (
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 90),
+                  margin: const EdgeInsets.fromLTRB(10, 0, 0, 90),
                   
                   child:Image.asset
                   (
-                    'assets/Evee_logo_2.png',
+                    'assets/evee_logo_img.png',
                     
-                    width: 400, // Set the width of the image
-                    height: 400, // Set the height of the image
+                    width: 300, // Set the width of the image
+                    height: 300, // Set the height of the image
                   ),
 
                 ),

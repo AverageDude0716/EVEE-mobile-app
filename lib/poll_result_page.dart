@@ -556,7 +556,7 @@ class _Poll_result_page_state extends State<Poll_result_page>
 
       switch (type) 
       {
-        case 'Multiple Choice':
+        case 'Single Choice':
           String op1 = data['option 1'];
           dynamic op1_res = data['option 1 responses'];
 
@@ -791,8 +791,8 @@ class _Poll_result_page_state extends State<Poll_result_page>
                               Text('Question: $questionText'),
                               Text('Type: $type'),
                               Text('Total Responders: ${respondentsList.length}'),
-                              if (type == 'Multiple Choice')
-                                _buildMultipleChoiceChart(question),
+                              if (type == 'Single Choice')
+                                _buildSingleChoiceChart(question),
                               if (type == 'Rank Choice')
                                 _buildRankChoiceChart(question),
                               if (type == 'Essay')
@@ -817,7 +817,7 @@ class _Poll_result_page_state extends State<Poll_result_page>
     );
   }
 
-  Widget _buildMultipleChoiceChart(List<dynamic> question) 
+  Widget _buildSingleChoiceChart(List<dynamic> question) 
   {
     String option1 = question[3];
     int option1Responses = question[4];
@@ -834,7 +834,7 @@ class _Poll_result_page_state extends State<Poll_result_page>
     [
       charts.Series
       (
-        id: 'Multiple Choice',
+        id: 'Single Choice',
         data: data,
         domainFn: (BarChartData data, _) => data.category,
         measureFn: (BarChartData data, _) => data.value,

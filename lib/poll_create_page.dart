@@ -17,8 +17,8 @@ class _Poll_create_page_state extends State<Poll_create_page>
 {
   Firebase_func firebase_func = Firebase_func();
 
-  String selectedOption = 'Multiple Choice';
-  List<String> options = ['Multiple Choice', 'Essay', 'Rank Choice' /*, 'Single Choice'*/];
+  String selectedOption = 'Single Choice';
+  List<String> options = ['Single Choice', 'Essay', 'Rank Choice' ,  'Multiple Choice'];
 
   int rank_selected = 0;
 
@@ -28,13 +28,21 @@ class _Poll_create_page_state extends State<Poll_create_page>
 
   TextEditingController poll_name_controller  = TextEditingController();
 
-  TextEditingController multiple_choice_question_controller = TextEditingController();
+  TextEditingController single_choice_question_controller = TextEditingController();
   TextEditingController option1_controller = TextEditingController();
   TextEditingController option2_controller = TextEditingController();
 
   TextEditingController essay_question_controller = TextEditingController();
 
   TextEditingController rank_question_controller = TextEditingController();
+
+  TextEditingController multiple_choice_controller = TextEditingController();
+  TextEditingController op1_controller = TextEditingController();
+  TextEditingController op2_controller = TextEditingController();
+  TextEditingController op3_controller = TextEditingController();
+  TextEditingController op4_controller = TextEditingController();
+  TextEditingController op5_controller = TextEditingController();
+  bool op3b = false, op4b = false, op5b = false; 
 
 
   void save(BuildContext context)
@@ -46,71 +54,132 @@ class _Poll_create_page_state extends State<Poll_create_page>
     {
 
       for(int x = 0; x < question_num; x++)
-    {
-
-      String type = selectedOption;
-
-      late String question, op1, op2;
-
-      switch(type)
       {
 
-        case 'Multiple Choice':
-          question = multiple_choice_question_controller.text;
-          op1 = option1_controller.text;
-          op2 = option2_controller.text;
+        String type = selectedOption;
 
-          if(question.isEmpty || op1.isEmpty || op2.isEmpty)
-          {
-            SnackBar snackBar = const SnackBar
-              (
-                content: Text('fill up all fields' ),
-                behavior: SnackBarBehavior.floating,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-          break;
+        late String question, op1, op2, op3, op4, op5;
 
-        case 'Essay':
-          question = essay_question_controller.text;
-          op1 = '0';
-          op2 = '0';
+        switch(type)
+        {
 
-          if(question.isEmpty)
-          {
-            SnackBar snackBar = const SnackBar
-              (
-                content: Text('fill up all fields' ),
-                behavior: SnackBarBehavior.floating,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-          break;
+          case 'Single Choice':
+            question = single_choice_question_controller.text;
+            op1 = option1_controller.text;
+            op2 = option2_controller.text;
+            op3 ='0';
+            op4 ='0';
+            op5 ='0';
 
-        case 'Rank Choice':
-          question = rank_question_controller.text;
-          op1 = '0';
-          op2 = '0';
-          if(question.isEmpty)
-          {
-            SnackBar snackBar = const SnackBar
-              (
-                content: Text('fill up all fields' ),
-                behavior: SnackBarBehavior.floating,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-          break;    
+            if(question.isEmpty || op1.isEmpty || op2.isEmpty)
+            {
+              SnackBar snackBar = const SnackBar
+                (
+                  content: Text('fill up all fields' ),
+                  behavior: SnackBarBehavior.floating,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            break;
 
+          case 'Essay':
+            question = essay_question_controller.text;
+            op1 = '0';
+            op2 = '0';
+            op3 ='0';
+            op4 ='0';
+            op5 ='0';
+
+            if(question.isEmpty)
+            {
+              SnackBar snackBar = const SnackBar
+                (
+                  content: Text('fill up all fields' ),
+                  behavior: SnackBarBehavior.floating,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            break;
+
+          case 'Rank Choice':
+            question = rank_question_controller.text;
+            op1 = '0';
+            op2 = '0';
+            op3 ='0';
+            op4 ='0';
+            op5 ='0';
+            if(question.isEmpty)
+            {
+              SnackBar snackBar = const SnackBar
+                (
+                  content: Text('fill up all fields' ),
+                  behavior: SnackBarBehavior.floating,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            break;    
+
+          case 'Multiple Choice':
+            question = multiple_choice_controller.text;
+            op1 = op1_controller.text;
+            op2 = op2_controller.text;
+            op3 = op3_controller.text;
+            op4 = op4_controller.text;
+            op5 = op5_controller.text;
+
+            if(op3b == true && op4b == false && op5b == false)
+            {
+              if(question.isEmpty || op1.isEmpty || op2.isEmpty || op3.isEmpty)
+              {
+                SnackBar snackBar = const SnackBar
+                  (
+                    content: Text('fill up all fields' ),
+                    behavior: SnackBarBehavior.floating,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+            }
+            else if(op4b == true  && op5b == false)
+            {
+              if(question.isEmpty || op1.isEmpty || op2.isEmpty || op3.isEmpty || op4.isEmpty )
+            {
+              SnackBar snackBar = const SnackBar
+                (
+                  content: Text('fill up all fields' ),
+                  behavior: SnackBarBehavior.floating,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            }
+            else if (op5b == true)
+            {
+              if(question.isEmpty || op1.isEmpty || op2.isEmpty || op3.isEmpty || op4.isEmpty || op5.isEmpty)
+            {
+              SnackBar snackBar = const SnackBar
+                (
+                  content: Text('fill up all fields' ),
+                  behavior: SnackBarBehavior.floating,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            }
+            break;
+
+        }
+        List<String> qst = [type, question, op1, op2, op3, op4, op5];
+
+        questions.add(qst);
+      
       }
-      List<String> qst = [type, question, op1, op2];
-
-      questions.add(qst);
-
-    }
 
     
-    firebase_func.save_poll(poll_name, questions);
+      firebase_func.save_poll(poll_name, questions);
+
+      Navigator.push
+      (
+        context, 
+        MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
+      );
 
     }
     else
@@ -258,11 +327,11 @@ class _Poll_create_page_state extends State<Poll_create_page>
                         children: 
                         [
 
-                          //multiple choice 
+                          //Single choice 
                           Visibility
                           (
 
-                            visible: selectedOption == 'Multiple Choice',
+                            visible: selectedOption == 'Single Choice',
                             child: Column
                             (
 
@@ -277,7 +346,7 @@ class _Poll_create_page_state extends State<Poll_create_page>
 
                                   child: TextField
                                   (
-                                    controller: multiple_choice_question_controller,
+                                    controller: single_choice_question_controller,
 
                                     decoration: const InputDecoration
                                     (
@@ -536,14 +605,259 @@ class _Poll_create_page_state extends State<Poll_create_page>
 
                           ),
 
-                          //single
-                          /*Visibility
+                          //Multiple choice
+                          Visibility
                           (
 
-                            visible: selectedOption == 'Single Choice',
-                            child: Text('Single')
+                            visible: selectedOption == 'Multiple Choice',
+                            child: Column
+                            (
 
-                          ),*/
+                              children: 
+                              [
+
+                                Container
+                                (
+
+                                  margin: const EdgeInsets.fromLTRB(0, 30, 0, 10),
+
+                                  child: TextField
+                                  (
+                                    controller: multiple_choice_controller,
+
+                                    decoration: const InputDecoration
+                                    (
+
+                                      hintText: 'Enter Question',
+                                      border: OutlineInputBorder
+                                      (
+                                        borderSide: BorderSide(color: light_gray),
+                                      ),
+                                      enabledBorder: OutlineInputBorder
+                                      (
+                                        borderSide: BorderSide(color: light_gray),
+                                      ),
+
+                                    ),
+
+                                  ),
+
+                                ),
+
+
+                                //options
+                                Column
+                                (
+                                  children: 
+                                  [
+
+                                    //option 1
+                                    Container
+                                    (
+                                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                      child: TextField
+                                      (
+                                        controller: op1_controller,
+
+                                        decoration: const InputDecoration
+                                        (
+
+                                          hintText: 'Enter option 1',
+                                          border: OutlineInputBorder
+                                          (
+                                            borderSide: BorderSide(color: light_gray),
+                                          ),
+                                          enabledBorder: OutlineInputBorder
+                                          (
+                                            borderSide: BorderSide(color: light_gray),
+                                          ),
+
+                                        ),
+
+                                      ),
+                                    ),
+
+
+                                    //option 2
+                                    Container
+                                    (
+                                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                      child: TextField
+                                      (
+                                        controller: op2_controller,
+
+                                        decoration: const InputDecoration
+                                        (
+
+                                          hintText: 'Enter option 2',
+                                          border: OutlineInputBorder
+                                          (
+                                            borderSide: BorderSide(color: light_gray),
+                                          ),
+                                          enabledBorder: OutlineInputBorder
+                                          (
+                                            borderSide: BorderSide(color: light_gray),
+                                          ),
+
+                                        ),
+
+                                      ),
+                                    ),
+
+                                    //add op3
+                                    Visibility
+                                    (
+                                      visible: op3b == false,
+                                      child: ElevatedButton
+                                      (
+                                        onPressed: () 
+                                        {
+                                          setState(() {
+                                            op3b = true;
+                                          });
+                                        }, 
+                                        child: const Text('add new option'),
+                                      )
+                                    ),
+
+                                    //option 3
+                                    Visibility
+                                    (
+                                      visible: op3b == true,
+                                      child: Container
+                                      (
+                                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                        child: TextField
+                                        (
+                                          controller: op3_controller,
+
+                                          decoration: const InputDecoration
+                                          (
+
+                                            hintText: 'Enter option 3',
+                                            border: OutlineInputBorder
+                                            (
+                                              borderSide: BorderSide(color: light_gray),
+                                            ),
+                                            enabledBorder: OutlineInputBorder
+                                            (
+                                              borderSide: BorderSide(color: light_gray),
+                                            ),
+
+                                          ),
+
+                                        ),
+                                      ),
+                                      
+                                    ),
+
+
+                                    //add op4
+                                    Visibility
+                                    (
+                                      visible: op3b ==true && op4b == false,
+                                      child: ElevatedButton
+                                      (
+                                        onPressed: () 
+                                        {
+                                          setState(() {
+                                            op4b = true;
+                                          });
+                                        }, 
+                                        child: const Text('add new option'),
+                                      )
+                                    ),
+
+                                    //option 4
+                                    Visibility
+                                    (
+                                      visible: op4b == true,
+                                      child: Container
+                                      (
+                                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                        child: TextField
+                                        (
+                                          controller: op4_controller,
+
+                                          decoration: const InputDecoration
+                                          (
+
+                                            hintText: 'Enter option 4',
+                                            border: OutlineInputBorder
+                                            (
+                                              borderSide: BorderSide(color: light_gray),
+                                            ),
+                                            enabledBorder: OutlineInputBorder
+                                            (
+                                              borderSide: BorderSide(color: light_gray),
+                                            ),
+
+                                          ),
+
+                                        ),
+                                      ),
+                                    ),
+
+
+                                    //add op5
+                                    Visibility
+                                    (
+                                      visible: op4b == true && op5b == false,
+                                      child: ElevatedButton
+                                      (
+                                        onPressed: () 
+                                        {
+                                          setState(() {
+                                            op5b = true;
+                                          });
+                                        }, 
+                                        child: const Text('add new option'),
+                                      )
+                                    ),
+
+                                    //option 5
+                                    Visibility
+                                    (
+                                      visible: op5b == true,
+                                      child: Container
+                                      (
+                                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                        child: TextField
+                                        (
+                                          controller: op5_controller,
+
+                                          decoration: const InputDecoration
+                                          (
+
+                                            hintText: 'Enter option 5',
+                                            border: OutlineInputBorder
+                                            (
+                                              borderSide: BorderSide(color: light_gray),
+                                            ),
+                                            enabledBorder: OutlineInputBorder
+                                            (
+                                              borderSide: BorderSide(color: light_gray),
+                                            ),
+
+                                          ),
+
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+
+                              ],
+
+                            )
+
+                          ),
 
                         ],
 
@@ -565,11 +879,6 @@ class _Poll_create_page_state extends State<Poll_create_page>
                   {
 
                     save(context);
-                    Navigator.push
-                    (
-                      context, 
-                      MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
-                    );
 
                   },
                   child: const Text('Save'),

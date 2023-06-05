@@ -194,7 +194,8 @@ class Firebase_func
   }
 
 
-  void save_question(String poll_id ,String type, String question, String op1, String op2)
+  void save_question(String poll_id ,String type, String question,
+   String op1, String op2, String op3, String op4, String op5)
   {
 
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -207,7 +208,7 @@ class Firebase_func
       switch(type)
       {
 
-        case 'Multiple Choice':
+        case 'Single Choice':
           updates =
           {
             'type': type,
@@ -216,7 +217,7 @@ class Firebase_func
             'option 1 responses': 0,
             'option 2': op2,
             'option 2 responses': 0,
-            'responders': 'none',
+            'responders': 'none/',
           };
           break;
 
@@ -226,7 +227,7 @@ class Firebase_func
               'type': type,
               'question': question,
               'responses': 0,
-              'responders': 'none',
+              'responders': 'none/',
             };
           break;
 
@@ -239,10 +240,76 @@ class Firebase_func
             'rank 2 responses': 0,
             'rank 3 responses': 0,
             'rank 4 responses': 0,
-            'responders': 'none',
+            'responders': 'none/',
           };
           break;    
-      
+
+        case 'Multiple Choice':
+          if(op3 == '0')
+          {
+            updates = 
+            {
+              'type': type,
+              'question': question,
+              'option 1': op1,
+              'option 1 responses': 0,
+              'option 2': op2,
+              'option 2 responses': 0,
+              'responders': 'none/',
+            };
+          }
+          else if(op4 == '0')
+          {
+            updates = 
+          {
+            'type': type,
+            'question': question,
+            'option 1': op1,
+            'option 1 responses': 0,
+            'option 2': op2,
+            'option 2 responses': 0,
+            'option 3': op3,
+            'option 3 responses': 0,
+            'responders': 'none/',
+          };
+          }
+          else if (op5 == '0')
+          {
+            updates = 
+            {
+              'type': type,
+              'question': question,
+              'option 1': op1,
+              'option 1 responses': 0,
+              'option 2': op2,
+              'option 2 responses': 0,
+              'option 3': op3,
+              'option 3 responses': 0,
+              'option 4': op4,
+              'option 4 responses': 0,
+              'responders': 'none/',
+            };
+          }
+          else if (op3 != '0' && op4 != '0' && op5 != '0')
+          {
+            updates = 
+            {
+              'type': type,
+              'question': question,
+              'option 1': op1,
+              'option 1 responses': 0,
+              'option 2': op2,
+              'option 2 responses': 0,
+              'option 3': op3,
+              'option 3 responses': 0,
+              'option 4': op4,
+              'option 4 responses': 0,
+              'option 5': op4,
+              'option 5 responses': 0,
+              'responders': 'none/',
+            };
+          }
+          break;
       }
 
       db.collection('polls').doc(poll_id).collection('questions').doc()
@@ -295,7 +362,7 @@ class Firebase_func
 
     for (int x = 0; x < questions.length; x++) {
       save_question(
-          poll_id, questions[x][0], questions[x][1], questions[x][2], questions[x][3]);
+          poll_id, questions[x][0], questions[x][1], questions[x][2], questions[x][3], questions[x][4], questions[x][5], questions[x][6]);
     }
   } else {
     print('fail');

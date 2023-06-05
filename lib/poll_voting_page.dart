@@ -27,7 +27,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   
 
   String selectedOption = 'Rank Choice';
-  List<String> options = ['Multiple Choice', 'Essay', 'Rank Choice' /*, 'Single Choice'*/];
+  List<String> options = ['Multiple Choice', 'Essay', 'Rank Choice' , 'Single Choice'];
 
   int rank_selected = 0;
 
@@ -90,7 +90,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
           switch(poll_type)
           {
 
-            case 'Multiple Choice':
+            case 'Single Choice':
               int op1_respo = data['option 1 responses'];
               int op2_respo = data['option 2 responses'];
               
@@ -251,7 +251,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
       questions.add(question);
       questions.add(responders);
 
-      if(type == 'Multiple Choice')
+      if(type == 'Single Choice')
       {
         String op1 = data['option 1'];
         String op2 = data['option 2'];
@@ -416,7 +416,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                               String responders = polls[index][2];
                               String op1 = 'pl', op2 = 'pl';
 
-                              if(type == 'Multiple Choice')
+                              if(type == 'Single Choice')
                               {
                                 op1 = polls[index][3];
                                 op2 = polls[index][4];
@@ -448,11 +448,11 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                           children: 
                                           [
 
-                                            //multiple choice 
+                                            //single choice 
                                             Visibility
                                             (
 
-                                              visible: type == 'Multiple Choice',
+                                              visible: type == 'Single Choice',
                                               child: Column
                                               (
 
@@ -678,7 +678,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
                                             ),
 
-                                            //single
+                                            //multiple
                                             /*Visibility
                                             (
 
