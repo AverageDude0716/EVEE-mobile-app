@@ -1,4 +1,7 @@
+import 'package:evee/admin_dashboard.dart';
 import 'package:evee/landing_page.dart';
+import 'package:evee/voter_dashboard.dart';
+import 'package:evee/voter_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:evee/firebase_functions.dart';
 import 'styles.dart';
@@ -6,6 +9,9 @@ import 'styles.dart';
 
 class Settings_page extends StatefulWidget
 {
+   final String type;
+
+  Settings_page({required this.type});
 
     @override
     State<Settings_page> createState() => _Settings_page_state();
@@ -15,6 +21,42 @@ class Settings_page extends StatefulWidget
 class _Settings_page_state extends State<Settings_page>
 {
   Firebase_func firebase_func = Firebase_func();
+
+  /* @override
+  void initState() {
+    super.initState();
+    String type = widget.type;
+    _navigateToNextScreen(type);
+  }
+
+  void _navigateToNextScreen(String type) 
+  {
+    SnackBar snackBar = const SnackBar
+                (
+                  content: Text('Still in development' ),
+                  behavior: SnackBarBehavior.floating,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+    if(type == 'voter')
+    {
+      Navigator.push
+      (
+        context, 
+        MaterialPageRoute(builder: (context) => Voter_dashboard_page())
+      );
+    }
+    if(type == 'admin')
+    {
+      Navigator.push
+      (
+        context, 
+        MaterialPageRoute(builder: (context) => Admnin_dashboard_page())
+      );
+    }
+      
+  }
+  */
 
   @override
   Widget build(BuildContext context)

@@ -23,7 +23,7 @@ class _Voter_dashboard_page_state extends State<Voter_dashboard_page>
 
    Voter_home_page(),
    Voter_profile_page(),
-   Settings_page(),
+   Settings_page(type: 'voter'),
 
   ];  
 

@@ -120,27 +120,35 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
             
                 return Scaffold
               (
+                appBar: PreferredSize
+                (
+                  preferredSize: const Size.fromHeight(70),
+                  child: AppBar
+                  (
+                    flexibleSpace: Container
+                            (
+
+                              margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              alignment: Alignment.center,
+
+                              child: const Text
+                              (
+                                'Your Polls',
+                                style: TextStyle(fontSize: 40,color: Colors.white, fontWeight: FontWeight.bold),
+                              ),
+
+                            ),
+                    backgroundColor: purple2,
+                    automaticallyImplyLeading: false,
+                  ),
+                ),
 
                 body: Column
                       (
+                        
 
                         children: 
                         [
-
-                          Container
-                          (
-
-                            margin: const EdgeInsets.fromLTRB(30, 30, 30, 10),
-                            alignment: Alignment.center,
-
-                            child: const Text
-                            (
-                              'Polls',
-                              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                            ),
-
-                          ),
-
 
                           //listview
                           Expanded
@@ -158,8 +166,8 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
 
                                     return Container
                                     (
-
-                                      margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                      width: screenWidth * 0.5,
+                                      margin: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                                       padding: const EdgeInsets.all(20),
                                       decoration: BoxDecoration
                                       (
@@ -175,49 +183,82 @@ class _Admin_home_page_state extends State<Admnin_home_page> {
                                         children: 
                                         [
 
-                                          Text
+                                          Container
                                           (
-                                            poll_list[position],
-                                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                          ),
+                                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
 
-                                          GestureDetector
-                                          (
-                                            onTap: () {
-                                            String textToCopy = poll_id[position];
-                                            FlutterClipboard.copy(textToCopy).then((value) 
-                                            {
-                                              const SnackBar snackBar = SnackBar
-                                              (
-                                                content: Text('Poll ID copied to clipboard'),
-                                                behavior: SnackBarBehavior.floating,
-                                              );
-                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                            });
-                                            },
-                                            child: const Text(
-                                              'Tap to copy Poll ID',
-                                              style:  TextStyle(fontSize: 15),
+                                            child: Text
+                                            (
+                                              poll_list[position],
+                                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                                             ),
                                           ),
 
-
-                                          GestureDetector
+                                          const Divider
                                           (
+                                            
+                                            thickness: 2,
+                                          ),
 
-                                            onTap: () 
-                                            {
-                                              String id = poll_id[position];
+                                          Row
+                                          (
+                                            children: 
+                                            [
 
-                                              Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => Poll_result_page(id: id)),
-                                              );
+                                              Expanded
+                                              (
+                                                flex: 2,
 
-                                            },
+                                                child: GestureDetector
+                                                (
+                                                  onTap: () {
+                                                  String textToCopy = poll_id[position];
+                                                  FlutterClipboard.copy(textToCopy).then((value) 
+                                                  {
+                                                    const SnackBar snackBar = SnackBar
+                                                    (
+                                                      content: Text('Poll ID copied to clipboard'),
+                                                      behavior: SnackBarBehavior.floating,
+                                                    );
+                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                  });
+                                                  },
+                                                  child: const Text(
+                                                    'Tap to copy Poll ID',
+                                                    style:  TextStyle(fontSize: 15),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),  
+                                              ),
 
-                                            child: const Text('view poll results'),
+                                              
 
+                                              Expanded
+                                              (
+                                                flex: 2,
+
+                                                child: GestureDetector
+                                                (
+
+                                                  onTap: () 
+                                                  {
+                                                    String id = poll_id[position];
+
+                                                    Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => Poll_result_page(id: id)),
+                                                    );
+
+                                                  },
+
+                                                  child: const Text('View Poll Results',
+                                                   style:  TextStyle(fontSize: 15),
+                                                   textAlign: TextAlign.center,),
+
+                                                ),
+                                              ),
+
+                                            ],
                                           ),
 
                                         ],

@@ -1,5 +1,6 @@
 // this is the first screen/page shown.
 
+import 'package:evee/home_page.dart';
 import 'package:evee/login.dart';
 import 'styles.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,22 @@ class Landing_page extends StatefulWidget
 
 class _Landing_page_state extends State<Landing_page>
 {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNextScreen();
+  }
+
+  void _navigateToNextScreen() {
+    // Delay for 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      // Navigate to the next screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Home_page()),
+      );
+    });
+  }
 
    @override
   Widget build(BuildContext context)
@@ -89,16 +106,16 @@ class _Landing_page_state extends State<Landing_page>
                   
                   child:Image.asset
                   (
-                    'assets/evee_logo_img.png',
+                    'assets/Evee_logo_2.png',
                     
-                    width: 300, // Set the width of the image
-                    height: 300, // Set the height of the image
+                    width: 400, // Set the width of the image
+                    height: 400, // Set the height of the image
                   ),
 
                 ),
 
 
-                Container
+                /*Container
                 (
                   width: 130.0,
 
@@ -130,7 +147,7 @@ class _Landing_page_state extends State<Landing_page>
 
                   ),
 
-                ),
+                ),*/
 
               ],
 

@@ -129,6 +129,72 @@ class _Voter_home_page_state extends State<Voter_home_page>
 
     return Scaffold
     (
+      appBar: PreferredSize
+      (
+        preferredSize: const Size.fromHeight(80),
+        
+        child: AppBar
+        (
+           backgroundColor: purple2,
+            automaticallyImplyLeading: false,
+
+          flexibleSpace:GestureDetector
+          (
+            onTap: ()
+            {
+              FocusScope.of(context).unfocus();
+            },
+
+            child: Container
+              (
+                margin: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+                
+                decoration: BoxDecoration
+                (
+                  
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Column
+                (
+                  children: 
+                  [
+                    TextField
+                    (
+                      controller: poll_id_input_controller,
+                      decoration: InputDecoration
+                      (
+                        
+                        hintText: 'Enter Poll ID',
+                        border: const OutlineInputBorder
+                        (
+                          borderSide: BorderSide(color: light_gray),
+                        ),
+                        enabledBorder: const OutlineInputBorder
+                        (
+                          borderSide: BorderSide(color: light_gray),
+                        ),
+
+                        suffixIcon: IconButton
+                        (
+                          onPressed: () async
+                          {
+                            String poll_id_input = poll_id_input_controller.text;
+
+                            await fetchDocumentById(context,poll_id_input);
+                          },
+                          icon: Icon(Icons.search),
+                        )
+                      ),
+                    ),
+                  ],
+                ),
+          )
+              ),
+           
+        )
+        
+      ),
+
       body: SingleChildScrollView
       (
         child: GestureDetector
@@ -142,54 +208,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
           (
             children: 
             [
-              Container
-              (
-                margin: const EdgeInsets.fromLTRB(30, 30, 30, 30),
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration
-                (
-                  color: yellow2,
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Column
-                (
-                  children: 
-                  [
-                    TextField
-                    (
-                      controller: poll_id_input_controller,
-                      decoration: const InputDecoration
-                      (
-                        hintText: 'Enter Poll ID',
-                        border: OutlineInputBorder
-                        (
-                          borderSide: BorderSide(color: light_gray),
-                        ),
-                        enabledBorder: OutlineInputBorder
-                        (
-                          borderSide: BorderSide(color: light_gray),
-                        ),
-                      ),
-                    ),
-                    ElevatedButton
-                    (
-                      onPressed: () async
-                      {
-
-                        String poll_id_input = poll_id_input_controller.text;
-
-                        await fetchDocumentById(context,poll_id_input);
-                        
-                      },
-                      style: const ButtonStyle
-                      (
-                        backgroundColor: MaterialStatePropertyAll(purple2),
-                      ),
-                      child: const Text('Vote'),
-                    ),
-                  ],
-                ),
-              ),
+              
               Container
               (
                 child: const Text
@@ -216,7 +235,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
                     List<List<String>> polls = snapshot.data!;
                     return Container
                     (
-                      height: screenHeight * 0.5,
+                      height: screenHeight,
                       child: ListView.builder
                       (
                         itemCount: polls.length,
@@ -224,7 +243,7 @@ class _Voter_home_page_state extends State<Voter_home_page>
                         {
                           return Container
                           (
-                            margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                            margin: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration
                             (

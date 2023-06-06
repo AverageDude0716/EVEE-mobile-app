@@ -22,7 +22,7 @@ class _Admnin_dashboard_page_state extends State<Admnin_dashboard_page>
 
    Admnin_home_page(),
    Admin_profile_page(),
-   Settings_page(),
+   Settings_page(type: 'admin'),
 
   ];  
 

@@ -60,6 +60,7 @@ flutter:
     - assets/round_icons.png
     - assets/round_icons2.png
     - assets/background.jpg
+    - assets/stock_image.jpg
   fonts:
     - family: Poppins
       fonts:
