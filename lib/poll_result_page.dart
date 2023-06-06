@@ -531,13 +531,14 @@ class _Poll_result_page_state extends State<Poll_result_page>
         FirebaseFirestore.instance.collection('polls').doc(id).collection('questions');
 
     List<List<dynamic>> questions = [];
-    List<dynamic> info = [];
     List<String> users = [];
 
     QuerySnapshot snapshot = await collref.get();
 
     for (var doc in snapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      List<dynamic> info = [];
 
       String type = data['type'];
       String question = data['question'];
@@ -596,6 +597,48 @@ class _Poll_result_page_state extends State<Poll_result_page>
           info.add(rank3);
           info.add(rank4);
           break;
+
+        case 'Multiple Choice':
+          String op1b = data['option 1'];
+          dynamic op1_resb = data['option 1 responses'];
+
+          String op2b = data['option 2'];
+          dynamic op2_resb = data['option 2 responses'];
+
+          String? op3 = data['option 3'];
+          dynamic op3_res = data['option 3 responses'];
+
+          String? op4 = data['option 4'];
+          dynamic op4_res = data['option 4 responses'];
+
+          String? op5 = data['option 5'];
+          dynamic op5_res = data['option 5 responses'];
+
+          info.add(op1b);
+          info.add(op1_resb);
+          info.add(op2b);
+          info.add(op2_resb);
+
+          if(op3 != null)
+          {
+            info.add(op3);
+            info.add(op3_res);
+
+            if(op4 != null)
+            {
+              info.add(op4);
+              info.add(op4_res);
+
+              if(op5 != null)
+              {
+                info.add(op5);
+                info.add(op5_res);
+              }
+            }
+          }
+
+          break;
+
       }
       String question_id = doc.id;
 
@@ -795,9 +838,10 @@ class _Poll_result_page_state extends State<Poll_result_page>
                                 _buildSingleChoiceChart(question),
                               if (type == 'Rank Choice')
                                 _buildRankChoiceChart(question),
-                              if (type == 'Essay')
-                               
+                              if (type == 'Essay')                          
                                 _buildEssayResponses(answers),
+                              if (type == 'Multiple Choice')                          
+                               _buildMultipleChoiceChart(question),
                             ],
                           ),
                         );
@@ -816,6 +860,7 @@ class _Poll_result_page_state extends State<Poll_result_page>
       ),
     );
   }
+
 
   Widget _buildSingleChoiceChart(List<dynamic> question) 
   {
@@ -891,13 +936,6 @@ class _Poll_result_page_state extends State<Poll_result_page>
     );
   }
 
-  /*Widget _buildEssayResponses(List<String> respondentsList) 
-  {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: respondentsList.map((response) => Text(response)).toList(),
-    );
-  }*/
 
   Widget _buildEssayResponses(List<dynamic> respondentsList) {
     return Column(
@@ -911,6 +949,66 @@ class _Poll_result_page_state extends State<Poll_result_page>
         ),
         child: Text(response, style: TextStyle(color: Colors.white)),
       )).toList(),
+    );
+  }
+
+  Widget _buildMultipleChoiceChart(List<dynamic> question) 
+  {
+    String option1 = question[3];
+    int option1Responses = question[4];
+    String option2 = question[5];
+    int option2Responses = question[6];
+    String? option3 = question[7];
+    int? option3Responses = question[8];
+    String? option4 = question[9];
+    int? option4Responses = question[10];
+    String? option5 = question[11];
+    int? option5Responses = question[12];
+
+
+    List<BarChartData> data = [];
+
+    data.add(BarChartData(option1, option1Responses));
+    data.add(BarChartData(option2, option2Responses));
+
+    if(option3 != null && option3Responses != null)
+    {
+      data.add(BarChartData(option3, option3Responses));
+
+      if(option4 != null && option4Responses != null)
+      {
+        data.add(BarChartData(option4, option4Responses));
+
+        if(option5 != null && option5Responses != null)
+        {
+          data.add(BarChartData(option5, option5Responses));
+        }
+      }
+    }
+
+    
+
+    List<charts.Series<BarChartData, String>> series = 
+    [
+      charts.Series
+      (
+        id: 'Multiple Choice',
+        data: data,
+        domainFn: (BarChartData data, _) => data.category,
+        measureFn: (BarChartData data, _) => data.value,
+      ),
+    ];
+
+    return Container
+    (
+      height: 400,
+      
+      child: charts.BarChart
+      (
+        series,
+        animate: true,
+        vertical: false,
+      ),
     );
   }
 }

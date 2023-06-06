@@ -31,6 +31,8 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
   int rank_selected = 0;
 
+  int single_choice_selected = 0;
+
   int multiple_choice_selected = 0;
 
   bool option1 = false, option2 = false, option3 = false, option4 = false;
@@ -74,7 +76,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
           poll_type = data['type'];
           String responders = data['responders'];
           
-              if(responders == 'none')
+              if(responders == 'none/')
               {
 
                 responders = '$user_id/';
@@ -95,7 +97,7 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
               int op2_respo = data['option 2 responses'];
               
 
-              switch(multiple_choice_selected)
+              switch(single_choice_selected)
               {
                 case 0:
                   op1_respo++;
@@ -167,6 +169,119 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
               break;
 
+
+              case 'Multiple Choice':
+              int op1_respo = data['option 1 responses'];
+              int op2_respo = data['option 2 responses'];
+              int? op3_respo = data['option 3 responses'];
+              int? op4_respo = data['option 4 responses'];
+              int? op5_respo = data['option 5 responses'];
+              
+
+              if(op3_respo != null && op4_respo != null && op5_respo != null)
+              {
+                switch(multiple_choice_selected)
+                {
+                  case 0:
+                    op1_respo++;
+                    break;
+                  case 1:
+                    op2_respo++;
+                    break;  
+                  case 2:
+                    op3_respo++;
+                    break;
+                  case 3:
+                    op4_respo++;
+                    break;
+                  case 4:
+                    op5_respo++;
+                    break;
+                }
+                await FirebaseFirestore.instance.collection('polls')
+                .doc(id).collection('questions').doc(qst_id).update(
+                  {
+                    'option 1 responses': op1_respo,
+                    'option 2 responses': op2_respo,
+                    'option 3 responses': op3_respo,
+                    'option 4 responses': op4_respo,
+                    'option 5 responses': op5_respo,
+                    'responders': responders,
+                  });
+              }
+              else if(op3_respo == null)
+              {
+                switch(multiple_choice_selected)
+                {
+                  case 0:
+                    op1_respo++;
+                    break;
+                  case 1:
+                    op2_respo++;
+                    break;  
+                }
+                await FirebaseFirestore.instance.collection('polls')
+                .doc(id).collection('questions').doc(qst_id).update(
+                  {
+                    'option 1 responses': op1_respo,
+                    'option 2 responses': op2_respo,
+                    'responders': responders,
+                  });
+              }
+              else if(op4_respo == null)
+              {
+                switch(multiple_choice_selected)
+                {
+                  case 0:
+                    op1_respo++;
+                    break;
+                  case 1:
+                    op2_respo++;
+                    break;  
+                  case 2:
+                    op3_respo++;
+                    break;
+                }
+                await FirebaseFirestore.instance.collection('polls')
+                .doc(id).collection('questions').doc(qst_id).update(
+                  {
+                    'option 1 responses': op1_respo,
+                    'option 2 responses': op2_respo,
+                    'option 3 responses': op3_respo,
+                    'responders': responders,
+                  });
+              }
+              else if(op5_respo == null)
+              {
+                switch(multiple_choice_selected)
+                {
+                  case 0:
+                    op1_respo++;
+                    break;
+                  case 1:
+                    op2_respo++;
+                    break;  
+                  case 2:
+                    op3_respo++;
+                    break;
+                  case 3:
+                    op4_respo++;
+                    break;
+                }
+                await FirebaseFirestore.instance.collection('polls')
+                .doc(id).collection('questions').doc(qst_id).update(
+                  {
+                    'option 1 responses': op1_respo,
+                    'option 2 responses': op2_respo,
+                    'option 3 responses': op3_respo,
+                    'option 4 responses': op4_respo,
+                    'responders': responders,
+                  });
+              }
+                        
+              break;
+
+
             default:
               break;      
 
@@ -221,6 +336,13 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
   }
 
 
+  void single_choice_select(int index) {
+    setState(() {
+      single_choice_selected = index;
+    });
+  }
+
+
   void multiple_choice_select(int index) {
     setState(() {
       multiple_choice_selected = index;
@@ -258,6 +380,31 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
 
         questions.add(op1);
         questions.add(op2);
+      }
+      else if(type == "Multiple Choice")
+      {
+        String op1 = data['option 1'];
+        String op2 = data['option 2'];
+        String? op3 = data['option 3'];
+        String? op4 = data['option 4'];
+        String? op5 = data['option 5'];
+
+        questions.add(op1);
+        questions.add(op2);
+        
+        if(op3 != null)
+        {
+          questions.add(op3);
+           if(op4 != null)
+          {
+            questions.add(op4);
+             if(op5 != null)
+            {
+
+              questions.add(op5);
+            } 
+          }
+        }
       }
 
       list.add(questions);
@@ -414,12 +561,41 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                               String type = polls[index][0];
                               String question = polls[index][1];
                               String responders = polls[index][2];
-                              String op1 = 'pl', op2 = 'pl';
+                              String op1 = 'pl', op2 = 'pl', op3 = 'pl', op4 = 'pl', op5 = 'pl';
+                              late String? top3, top4, top5;
+
+                              late bool op3_n, op4_n , op5_n;
 
                               if(type == 'Single Choice')
                               {
                                 op1 = polls[index][3];
                                 op2 = polls[index][4];
+                              }
+                              else if (type == 'Multiple Choice')
+                              {
+                                op1 = polls[index][3];
+                                op2 = polls[index][4];
+                                top3 = polls[index][5];
+                                top4 = polls[index][6];
+                                top5 = polls[index][7];
+
+                                op3_n = top3 != null;
+                                op4_n = top4 != null;
+                                op5_n = top5 != null;
+
+                                if(op3_n)
+                                {
+                                  op3 = top3;
+                                }
+                                if(op4_n)
+                                {
+                                  op4 = top4;
+                                }
+                                if(op5_n)
+                                {
+                                  op5 = top5;
+                                }
+
                               }
 
                               return Container
@@ -481,9 +657,9 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                                     child: ElevatedButton
                                                         (
 
-                                                          onPressed: () => multiple_choice_select(0),
+                                                          onPressed: () => single_choice_select(0),
                                                           style: ElevatedButton.styleFrom(
-                                                            backgroundColor: multiple_choice_selected == 0 ? Colors.green : Colors.blue,
+                                                            backgroundColor: single_choice_selected == 0 ? Colors.green : Colors.blue,
                                                           ),
                                                           child:  Text(op1),
 
@@ -500,9 +676,9 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                                     child: ElevatedButton
                                                         (
 
-                                                          onPressed: () => multiple_choice_select(1),
+                                                          onPressed: () => single_choice_select(1),
                                                           style: ElevatedButton.styleFrom(
-                                                            backgroundColor: multiple_choice_selected == 1 ? Colors.green : Colors.blue,
+                                                            backgroundColor: single_choice_selected == 1 ? Colors.green : Colors.blue,
                                                           ),
                                                           child:  Text(op2),
 
@@ -679,13 +855,140 @@ class _Poll_voting_page_state extends State<Poll_voting_page>
                                             ),
 
                                             //multiple
-                                            /*Visibility
+                                            Visibility
                                             (
 
-                                              visible: type == 'Single Choice',
-                                              child: Text('Single')
+                                              visible: type == 'Multiple Choice',
+                                              child: Column
+                                              (
 
-                                            ),*/
+                                                children: 
+                                                [
+
+                                                  //question
+                                                  Container
+                                                  (
+
+                                                    margin: const EdgeInsets.fromLTRB(0, 30, 0, 10),
+
+                                                    child: SingleChildScrollView
+                                                    (
+                                                      child: Text(question),
+                                                    ),
+
+                                                  ),
+
+                                                  //option1
+                                                  Container
+                                                  (
+
+                                                    //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                                    child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => multiple_choice_select(0),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: multiple_choice_selected == 0 ? Colors.green : Colors.blue,
+                                                          ),
+                                                          child:  Text(op1),
+
+                                                        ),
+
+                                                  ),
+
+                                                  //option 2
+                                                  Container
+                                                  (
+
+                                                    //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                                    child: ElevatedButton
+                                                        (
+
+                                                          onPressed: () => multiple_choice_select(1),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: multiple_choice_selected == 1 ? Colors.green : Colors.blue,
+                                                          ),
+                                                          child:  Text(op2),
+
+                                                        ),
+
+                                                  ),
+
+                                                  //option 3
+                                                  Visibility
+                                                  (
+                                                    visible: op3_n,
+                                                    child: Container
+                                                    (
+
+                                                      //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                                      child: ElevatedButton
+                                                          (
+
+                                                            onPressed: () => multiple_choice_select(2),
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: multiple_choice_selected == 2 ? Colors.green : Colors.blue,
+                                                            ),
+                                                            child:  Text(op3),
+
+                                                          ),
+
+                                                    ),
+                                                  ),
+
+                                                  //option 4
+                                                  Visibility
+                                                  (
+                                                    visible: op4_n,
+                                                    child: Container
+                                                    (
+
+                                                      //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                                      child: ElevatedButton
+                                                          (
+
+                                                            onPressed: () => multiple_choice_select(3),
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: multiple_choice_selected == 3 ? Colors.green : Colors.blue,
+                                                            ),
+                                                            child:  Text(op4),
+
+                                                          ),
+
+                                                    ),
+                                                  ),
+
+                                                  Visibility
+                                                  (
+                                                    visible: op5_n,
+                                                    child: Container
+                                                    (
+
+                                                      //margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+
+                                                      child: ElevatedButton
+                                                          (
+
+                                                            onPressed: () => multiple_choice_select(4),
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: multiple_choice_selected == 4 ? Colors.green : Colors.blue,
+                                                            ),
+                                                            child:  Text(op5),
+
+                                                          ),
+
+                                                    ),
+                                                  ),
+
+                                                ],
+
+                                              )
+
+                                            ),
 
                                           ],
 
